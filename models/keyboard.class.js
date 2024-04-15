@@ -1,10 +1,11 @@
 class Keyboard {
-    left = false;
-    right = false;
-    space = false;
+    LEFT = false;
+    RIGHT = false;
+    UP = false;
+    DOWN = false
+    SPACE = false;
     keyF = false;
 
     constructor() {
-        
     }
 }
