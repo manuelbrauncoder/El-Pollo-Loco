@@ -1,23 +1,12 @@
 class World {
     character = new Character();
-    clouds = [
-        new Cloud()
-    ];
-    backgroundObjects = [
-        new BackgroundObject('img/5_background/layers/air.png', 0),
-        new BackgroundObject('img/5_background/layers/3_third_layer/1.png', 0),
-        new BackgroundObject('img/5_background/layers/2_second_layer/1.png', 0),
-        new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 0)
-        
-    ];
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken()
-    ];
+    clouds = level1.clouds;
+    backgroundObjects = level1.backgroundObjects;
+    enemies = level1.enemies;
     canvas;
     ctx;    // ctx = context
     keyboard;
+    camera_x = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -33,11 +22,14 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    // canvas wird gelöscht
-
+        this.ctx.translate(this.camera_x, 0);
+        
         this.addObjectsToMap(this.backgroundObjects);
         this.addObjectsToMap(this.clouds);
         this.addObjectsToMap(this.enemies);
         this.addToMap(this.character);
+
+        this.ctx.translate(-this.camera_x, 0);
 
         let self = this;                        // this funktioniert nicht in der folgenden Funktion, deswegen wird es einer Variable zugewiesen
         requestAnimationFrame(function() {
@@ -46,7 +38,17 @@ class World {
     }
 
     addToMap(movableObject) {
+        if(movableObject.otherDirection) {
+            this.ctx.save();    // speichert die aktuellen ctx (context) informationen ab
+            this.ctx.translate(movableObject.width, 0); // verschiebt das bild
+            this.ctx.scale(-1, 1);  // spiegelt das bild
+            movableObject.x = movableObject.x * -1; // da auch das koordinatensystem sich dreht, muss die x Koordinate gespiegelt werden
+        }
         this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
+        if(movableObject.otherDirection) {
+            movableObject.x = movableObject.x * -1;
+            this.ctx.restore();     // stellt die informationen zum ctx von oben wieder her
+        }
     }
 
     addObjectsToMap(objects) {
@@ -54,6 +56,4 @@ class World {
             this.addToMap(o);
         });
     }
-
-    
 }
