@@ -27,8 +27,15 @@ class MovableObject {
     }
 
     moveLeft() {
-        setInterval( () => {
+        setInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60);
+    }
+
+    playAnimation(images) {
+        let i = this.currentImage % this.IMAGES_WALKING.length; // modulo: i startet bei 0 bis zur länge des array. Dann geht es wieder bei 0 los
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
     }
 }
