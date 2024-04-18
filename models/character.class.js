@@ -1,7 +1,7 @@
 class Character extends MovableObject {
     height = 220;
     x = 80;
-    y = 210;
+    y = 80; //210
     speed = 10;
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
@@ -18,6 +18,7 @@ class Character extends MovableObject {
     constructor() {
         super().loadImage('img/2_character_pepe/1_idle/idle/I-1.png');      // super() wird nur am Anfang angegeben. Die Funktionen danach werden mit this.fn-Name aufgerufen
         this.loadImages(this.IMAGES_WALKING);
+        this.applyGravity();
         this.animate();
     }
 
