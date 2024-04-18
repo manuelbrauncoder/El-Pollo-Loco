@@ -5,6 +5,9 @@ class World {
     ctx;    // ctx = context
     keyboard;
     camera_x = 0;
+    statusBarLive = new StatusbarLive();
+    statusBarCoin = new StatusbarCoin();
+    statusBarBottle = new StatusbarBottle();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -12,10 +15,24 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     }
 
     setWorld() {
         this.character.world = this; // übergibt die world an die class Character, damit die variablen dort auch verfügbar sind
+    }
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach( (enemy) =>{
+               if (this.character.isColliding(enemy)) {
+               // console.log('Collision with Character', enemy);
+                this.character.hit();
+                this.statusBarLive.setPercentage(this.character.energy);
+                //console.log('energy of pepe is:', this.character.energy);
+               }
+            })
+        }, 200);
     }
 
     draw() {
@@ -25,8 +42,15 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.collectObjects);
         this.addToMap(this.character);
-
+        // --------------Space for fixed Objects-------------------
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.statusBarLive);
+        this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusBarBottle);
+        this.ctx.translate(this.camera_x, 0);
+        // --------------Space for fixed Objects-------------------
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;                        // this funktioniert nicht in der folgenden Funktion, deswegen wird es einer Variable zugewiesen

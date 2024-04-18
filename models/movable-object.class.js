@@ -1,16 +1,10 @@
-class MovableObject {
-    x = 120;
-    y = 300;
-    img;
-    height = 100;
-    width = 100;
-    imageCache = {};
-    currentImage = 0;
+class MovableObject extends DrawableObject{
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
     acceleration = 2;
-
+    energy = 100;
+    lastHit = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -26,21 +20,8 @@ class MovableObject {
         return this.y < 210;
     }
 
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImages(arr) {                       // läd images aus einem array, array wird via parameter übergeben
-        arr.forEach((path) => {             // in dem array stehen die einzelnen dateipfade // Das Array ist ein Objekt
-            let img = new Image();          // Variable für neues img wird deklariert
-            img.src = path;                 // pfad wird zugewiesen
-            this.imageCache[path] = img;    // pfad wird dem img zugewiesen
-        });
-    }
-
     moveRight() {
-        this.x += this.speed;  
+        this.x += this.speed;
     }
 
     moveLeft() {
@@ -48,7 +29,7 @@ class MovableObject {
     }
 
     playAnimation(images) {
-        let i = this.currentImage % this.IMAGES_WALKING.length; // modulo: i startet bei 0 bis zur länge des array. Dann geht es wieder bei 0 los
+        let i = this.currentImage % images.length; // modulo: i startet bei 0 bis zur länge des array. Dann geht es wieder bei 0 los
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
@@ -58,15 +39,36 @@ class MovableObject {
         this.speedY = 25;
     }
 
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    isColliding(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x &&
+            this.y < mo.y + mo.height;
     }
 
-    drawFrame(ctx) {
-        ctx.beginPath();
-        ctx.lineWidth = '1';
-        ctx.strokeStyle = 'blue';
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
+    hit() {
+        this.energy -= 5;
+        if(this.energy <= 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
     }
+
+    isDead() {
+        return this.energy == 0;
+    }
+
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lastHit; // difference in ms
+        timepassed = timepassed / 1000; // difference in sec
+        return timepassed < 1;
+    }
+
+//     isColliding(obj) {
+//         return (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
+//             (this.y + this.offsetY + this.height) >= obj.y &&
+//             (this.y + this.offsetY) <= (obj.y + obj.height) &&
+//             obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
+//     }
 }
