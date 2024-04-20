@@ -21,13 +21,13 @@ class StatusbarBottle extends Statusbar {
     getIndexForBottleImage() {
         if (this.bottlesPercentage == 100) {
             return 5;
-        } else if(this.bottlesPercentage > 80) {
+        } else if(this.bottlesPercentage >= 80) {
             return 4;
-        } else if(this.bottlesPercentage > 60) {
+        } else if(this.bottlesPercentage >= 60) {
             return 3;
-        } else if (this.bottlesPercentage > 40) {
+        } else if (this.bottlesPercentage >= 40) {
             return 2;
-        } else if (this.bottlesPercentage > 20) {
+        } else if (this.bottlesPercentage >= 20) {
             return 1
         } else if(this.bottlesPercentage >= 0) {
             return 0;
@@ -35,7 +35,7 @@ class StatusbarBottle extends Statusbar {
     }
 
     hitCollectebleItem() {
-        this.bottlesPercentage += 5;
+        this.bottlesPercentage += 10;
         if(this.bottlesPercentage >= 100) {
             this.bottlesPercentage = 100;
         }

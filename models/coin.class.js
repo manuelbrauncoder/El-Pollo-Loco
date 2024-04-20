@@ -3,13 +3,12 @@ class Coin extends CollectableObject {
     height = 100;
     width = 100;
     possibleY = [300, 200];
-    static idCounter = 0;
 
     constructor() {
         super().loadImage('img/8_coin/coin_1.png');
         this.x = 200 + Math.random() * 2600;
         this.y = this.possibleY[this.generateRndIndex()];
-        this.id = Coin.idCounter++;
+        this.id = CollectableObject.idCounter++;
     }
 
     generateRndIndex() {

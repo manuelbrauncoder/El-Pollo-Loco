@@ -8,6 +8,7 @@ class World {
     statusBarLive = new StatusbarLive();
     statusBarCoin = new StatusbarCoin();
     statusBarBottle = new StatusbarBottle();
+    statusBar = new Statusbar();
     throwableObjects = [];
     bottle = new Bottle();
 
@@ -18,7 +19,6 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
-       
     }
 
     setWorld() {
@@ -34,9 +34,11 @@ class World {
     }
 
     checkThrowObjects() {
-        if(this.keyboard.KEY_F) {
+        if (this.keyboard.KEY_F && this.statusBarBottle.bottlesPercentage >= 10) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
+            this.statusBarBottle.bottlesPercentage -= 10;
+            this.statusBarBottle.setBottles(this.statusBarBottle.bottlesPercentage);
         }
     }
 
@@ -49,17 +51,17 @@ class World {
         })
     }
 
+    // evl noch die id zwischen speichern und so doppelte bottles vermeiden
+
     collectObjects(collectableObj) {
-            setInterval(() => {
-                collectableObj.forEach( (obj) => {
-                    if (this.character.isColliding(obj)) {
-                        this.bottle.flyAway(obj);
-                        this.statusBarBottle.hitCollectebleItem();
-                    }
-                })
-            }, 200);
-         
-    }
+        collectableObj.forEach((obj) => {
+            if (this.character.isColliding(obj)) {
+                console.log('id:', obj.id);
+                this.bottle.flyAway(obj);
+                this.statusBarBottle.hitCollectebleItem();
+            }
+        });
+    }   
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    // canvas wird gelöscht

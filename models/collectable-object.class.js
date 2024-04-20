@@ -1,4 +1,7 @@
 class CollectableObject extends MovableObject {
+
+    static idCounter = 0;
+
     constructor() {
         super();
     }
@@ -6,7 +9,7 @@ class CollectableObject extends MovableObject {
     flyAway(obj) {
         setInterval(() => {
             obj.x -= 3;
-            obj.y -= 3;
+            obj.y -= 100;
         }, 25);
     }
 }
