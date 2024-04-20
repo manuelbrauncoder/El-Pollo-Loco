@@ -3,6 +3,7 @@ class Statusbar extends DrawableObject {
     width = 160;
     height = 50;
     
+    
     constructor() {
         super();
         
@@ -20,5 +21,7 @@ class Statusbar extends DrawableObject {
         }
         return Math.floor(this.percentage / 20);
     }
+
+   
     
 }

@@ -8,6 +8,8 @@ class World {
     statusBarLive = new StatusbarLive();
     statusBarCoin = new StatusbarCoin();
     statusBarBottle = new StatusbarBottle();
+    throwableObjects = [];
+    bottle = new Bottle();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -15,24 +17,48 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
+       
     }
 
     setWorld() {
         this.character.world = this; // übergibt die world an die class Character, damit die variablen dort auch verfügbar sind
     }
 
-    checkCollisions() {
+    run() {
         setInterval(() => {
-            this.level.enemies.forEach( (enemy) =>{
-               if (this.character.isColliding(enemy)) {
-               // console.log('Collision with Character', enemy);
+            this.checkCollisions();
+            this.checkThrowObjects();
+            this.collectObjects(this.level.bottles);
+        }, 200);
+    }
+
+    checkThrowObjects() {
+        if(this.keyboard.KEY_F) {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(bottle);
+        }
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBarLive.setPercentage(this.character.energy);
-                //console.log('energy of pepe is:', this.character.energy);
-               }
-            })
-        }, 200);
+            }
+        })
+    }
+
+    collectObjects(collectableObj) {
+            setInterval(() => {
+                collectableObj.forEach( (obj) => {
+                    if (this.character.isColliding(obj)) {
+                        this.bottle.flyAway(obj);
+                        this.statusBarBottle.hitCollectebleItem();
+                    }
+                })
+            }, 200);
+         
     }
 
     draw() {
@@ -42,8 +68,9 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.collectObjects);
+        this.addObjectsToMap(this.level.bottles);
         this.addToMap(this.character);
+        this.addObjectsToMap(this.throwableObjects);
         // --------------Space for fixed Objects-------------------
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBarLive);
@@ -65,6 +92,7 @@ class World {
         }
         movableObject.draw(this.ctx);
         movableObject.drawFrame(this.ctx);
+        movableObject.drawOffsetFrame(this.ctx);
 
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);

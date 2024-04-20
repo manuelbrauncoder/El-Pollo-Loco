@@ -7,6 +7,11 @@ class DrawableObject {
     height = 100;
     width = 100;
 
+    offsetTop = 10;
+    offsetBottom = 10;
+    offsetRight = 10;
+    offsetLeft = 10;
+
     constructor() {
 
     }
@@ -29,11 +34,21 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof Bottle) {
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+
+    drawOffsetFrame(ctx) {
+        if(this instanceof Character || this instanceof Chicken || this instanceof Bottle) {
+            ctx.beginPath();
+            ctx.lineWidth = '1';
+            ctx.strokeStyle = 'red';
+            ctx.rect((this.x + this.offsetLeft), (this.y + this.offsetTop), (this.width - this.offsetRight - this.offsetLeft), (this.height - this.offsetTop - this.offsetBottom));
             ctx.stroke();
         }
     }
