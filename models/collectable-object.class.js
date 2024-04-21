@@ -1,6 +1,6 @@
 class CollectableObject extends MovableObject {
 
-    static idCounter = 0;
+    //static idCounter = 0;
 
     constructor() {
         super();

@@ -21,10 +21,16 @@ class World {
         this.run();
     }
 
+    /**
+     * passes the world class to the character class
+     */
     setWorld() {
-        this.character.world = this; // übergibt die world an die class Character, damit die variablen dort auch verfügbar sind
+        this.character.world = this;
     }
 
+    /**
+     * intervall to run different methods
+     */
     run() {
         setInterval(() => {
             this.checkCollisions();
@@ -33,6 +39,9 @@ class World {
         }, 200);
     }
 
+    /**
+     * throw objects if key F is pressed, and bottles collected
+     */
     checkThrowObjects() {
         if (this.keyboard.KEY_F && this.statusBarBottle.bottlesPercentage >= 10) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
@@ -42,6 +51,9 @@ class World {
         }
     }
 
+    /**
+     * check if the character collides with an enemy 
+     */
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
@@ -51,18 +63,34 @@ class World {
         })
     }
 
-    // evl noch die id zwischen speichern und so doppelte bottles vermeiden
-
+    
+/**
+ * collect objects
+ * @param {object} collectableObj 
+ */
     collectObjects(collectableObj) {
         collectableObj.forEach((obj) => {
             if (this.character.isColliding(obj)) {
-                console.log('id:', obj.id);
-                this.bottle.flyAway(obj);
-                this.statusBarBottle.hitCollectebleItem();
+                this.statusBarBottle.hitCollectebleItem(this.statusBarBottle.bottlesPercentage);
+                this.deleteObject(obj, this.level.bottles); 
             }
         });
-    }   
+    }
+    
+    /**
+     * delete object and redraw world
+     * @param {obj} obj to delete
+     * @param {Array} arr from the object
+     */
+    deleteObject(obj, arr) {
+        let index = arr.indexOf(obj);
+        arr.splice(index, 1);
+        this.draw();
+    }
 
+    /**
+     * add obj to map and draw the world
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    // canvas wird gelöscht
         this.ctx.translate(this.camera_x, 0);
@@ -71,6 +99,7 @@ class World {
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
         // --------------Space for fixed Objects-------------------
@@ -88,6 +117,10 @@ class World {
         });
     }
 
+    /**
+     * add object to map
+     * @param {object} movableObject 
+     */
     addToMap(movableObject) {
         if (movableObject.otherDirection) {
             this.flipImage(movableObject);
@@ -101,12 +134,20 @@ class World {
         }
     }
 
+    /**
+     * add array of objects to map
+     * @param {object} objects 
+     */
     addObjectsToMap(objects) {
         objects.forEach(o => {
             this.addToMap(o);
         });
     }
 
+    /**
+     * flip image 180 degree
+     * @param {object} movableObject 
+     */
     flipImage(movableObject) {
         this.ctx.save();    // speichert die aktuellen ctx (context) informationen ab
         this.ctx.translate(movableObject.width, 0); // verschiebt das bild
@@ -114,6 +155,10 @@ class World {
         movableObject.x = movableObject.x * -1; // da auch das koordinatensystem sich dreht, muss die x Koordinate gespiegelt werden
     }
 
+    /**
+     * flip image back
+     * @param {object} movableObject 
+     */
     flipImageBack(movableObject) {
         movableObject.x = movableObject.x * -1;
         this.ctx.restore();     // stellt die informationen zum ctx von oben wieder her
