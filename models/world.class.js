@@ -35,7 +35,8 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-            this.collectObjects(this.level.bottles);
+            this.collectBottles(this.level.bottles);
+            this.collectCoins(this.level.coins);
         }, 200);
     }
 
@@ -68,11 +69,24 @@ class World {
  * collect objects
  * @param {object} collectableObj 
  */
-    collectObjects(collectableObj) {
+    collectBottles(collectableObj) {
         collectableObj.forEach((obj) => {
             if (this.character.isColliding(obj)) {
-                this.statusBarBottle.hitCollectebleItem(this.statusBarBottle.bottlesPercentage);
+                this.statusBarBottle.hitCollectebleBottle(this.statusBarBottle.bottlesPercentage);
                 this.deleteObject(obj, this.level.bottles); 
+            }
+        });
+    }
+
+    /**
+ * collect objects
+ * @param {object} collectableObj 
+ */
+    collectCoins(collectableObj) {
+        collectableObj.forEach((obj) => {
+            if (this.character.isColliding(obj)) {
+                this.statusBarCoin.hitCollectebleCoin(this.statusBarCoin.coinPercentage);
+                this.deleteObject(obj, this.level.coins); 
             }
         });
     }

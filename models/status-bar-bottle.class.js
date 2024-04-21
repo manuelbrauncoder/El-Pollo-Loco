@@ -34,7 +34,7 @@ class StatusbarBottle extends Statusbar {
         }
     }
 
-    hitCollectebleItem() {
+    hitCollectebleBottle() {
         this.bottlesPercentage += 10;
         if(this.bottlesPercentage >= 100) {
             this.bottlesPercentage = 100;
