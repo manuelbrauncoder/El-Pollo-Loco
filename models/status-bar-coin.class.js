@@ -10,6 +10,7 @@ class StatusbarCoin extends Statusbar {
     ];
 
     coinPercentage = 0;
+    collecting_coin_sound = new Audio('audio/collect_Coins.mp3');
 
     constructor() {
         super();
@@ -37,6 +38,7 @@ class StatusbarCoin extends Statusbar {
 
     hitCollectebleCoin() {
         this.coinPercentage += 10;
+        this.collecting_coin_sound.play();
         if(this.coinPercentage >= 100) {
             this.coinPercentage = 100;
         }

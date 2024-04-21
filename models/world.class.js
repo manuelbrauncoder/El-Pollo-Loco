@@ -37,7 +37,7 @@ class World {
             this.checkThrowObjects();
             this.collectBottles(this.level.bottles);
             this.collectCoins(this.level.coins);
-        }, 200);
+        }, 100);
     }
 
     /**
@@ -49,6 +49,7 @@ class World {
             this.throwableObjects.push(bottle);
             this.statusBarBottle.bottlesPercentage -= 10;
             this.statusBarBottle.setBottles(this.statusBarBottle.bottlesPercentage);
+            this.character.throwing_sound.play();
         }
     }
 
