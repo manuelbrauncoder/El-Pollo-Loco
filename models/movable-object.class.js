@@ -40,6 +40,22 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
+    /**
+     * beta!!
+     * @param {*} images 
+     */
+    playAnimationWithoutLoop(images) {
+        for (let i = 0; i < images.length; i++) {
+            const image = images[i];
+            let path = image;
+            this.img = this.imageCache[path];
+        }
+    }
+
+    clearAllIntervals() {
+        for (let i = 1; i < 9999; i++) window.clearInterval(i);
+      }
+
     jump() {
         this.speedY = 25;
     }

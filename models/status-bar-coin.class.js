@@ -9,6 +9,7 @@ class StatusbarCoin extends Statusbar {
         'img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png'
     ];
 
+
     coinPercentage = 0;
     collecting_coin_sound = new Audio('audio/collect_Coins.mp3');
 

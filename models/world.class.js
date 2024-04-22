@@ -37,7 +37,19 @@ class World {
             this.checkThrowObjects();
             this.collectBottles(this.level.bottles);
             this.collectCoins(this.level.coins);
+            this.hitEnemyWithBotte();
         }, 100);
+    }
+
+    hitEnemyWithBotte() {
+        this.level.enemies.forEach((enemy) => {
+            this.throwableObjects.forEach((o) => {
+                if(o.isColliding(enemy)) {
+                    console.log('hit with bottle!', o, enemy);
+                    this.deleteObject(enemy, this.level.enemies);
+                }
+            })
+        })
     }
 
     /**

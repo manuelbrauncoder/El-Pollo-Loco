@@ -84,9 +84,10 @@ class Character extends MovableObject {
 
         }, 1000 / 60);
 
-        setInterval(() => {
+       setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                //this.clearAllIntervals();
             } else if(this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURTING);
             } else if (this.isAboveGround()) {
@@ -98,6 +99,4 @@ class Character extends MovableObject {
             }
         }, 50)
     }
-
-
 }
