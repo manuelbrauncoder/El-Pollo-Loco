@@ -90,6 +90,6 @@ class MovableObject extends DrawableObject {
         return this.x + this.width - this.offsetRight > obj.x + obj.offsetLeft &&
             this.y + this.height - this.offsetBottom > obj.y + obj.offsetTop &&
             this.x + this.offsetLeft < obj.x + obj.width - obj.offsetRight &&
-            this.y + this.offsetBottom < obj.y + obj.height - obj.offsetBottom;
+            this.y + this.offsetTop < obj.y + obj.height - obj.offsetBottom;
     }
 }
