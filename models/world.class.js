@@ -9,6 +9,7 @@ class World {
     statusBarCoin = new StatusbarCoin();
     statusBarBottle = new StatusbarBottle();
     statusBar = new Statusbar();
+    statusBarBoss = new StatusbarEndboss();
     throwableObjects = [];
     bottle = new Bottle();
 
@@ -115,6 +116,12 @@ class World {
         this.draw();
     }
 
+    isBossInRange() {
+        if(this.character.x > 2400) {
+            this.addToMap(this.statusBarBoss);
+        }
+    }
+
     /**
      * add obj to map and draw the world
      */
@@ -134,6 +141,7 @@ class World {
         this.addToMap(this.statusBarLive);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
+        this.isBossInRange();
         this.ctx.translate(this.camera_x, 0);
         // --------------Space for fixed Objects-------------------
         this.ctx.translate(-this.camera_x, 0);
