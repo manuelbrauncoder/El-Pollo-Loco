@@ -12,6 +12,9 @@ class World {
     statusBarBoss = new StatusbarEndboss();
     throwableObjects = [];
     bottle = new Bottle();
+    jumpedAt;
+    hitEnemyAt;
+    intervalIds = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -19,7 +22,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.run();
+        this.setStoppableInterval(this.run.bind(this), 100);
     }
 
     /**
@@ -30,22 +33,52 @@ class World {
     }
 
     /**
-     * intervall to run different methods
+     * start interval
+     * @param {function} fn for to repeat
+     * @param {number} time for the interval
+     */
+    setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        this.intervalIds.push(id);
+    }
+
+
+    /**
+     * start checks
      */
     run() {
-        setInterval(() => {
-            this.checkCollisions();
-            this.checkThrowObjects();
-            this.collectBottles(this.level.bottles);
-            this.collectCoins(this.level.coins);
-            this.hitEnemyWithBotte();
-        }, 100);
+        this.checkCollisions();
+        this.checkThrowObjects();
+        this.collectBottles(this.level.bottles);
+        this.collectCoins(this.level.coins);
+        this.hitEnemyWithBotte();
+        this.checkCharacterHeight();
+    }
+
+    /**
+     * save time if character is on coordinate
+     */
+    checkCharacterHeight() {
+        if (this.character.y <= 50) {
+            this.jumpedAt = new Date().getTime();
+        }
+    }
+
+    isCharacterJumping(enemy) {
+        let timeDifference = this.hitEnemyAt - this.jumpedAt;
+        if (timeDifference <= 500) {
+            console.log('enemy killed!');
+            this.deleteObject(enemy, this.level.enemies);
+            return true;
+        } else {
+            return;
+        }
     }
 
     hitEnemyWithBotte() {
         this.level.enemies.forEach((enemy) => {
             this.throwableObjects.forEach((o) => {
-                if(o.isColliding(enemy)) {
+                if (o.isColliding(enemy)) {
                     console.log('hit with bottle!', o, enemy);
                     this.deleteObject(enemy, this.level.enemies);
                 }
@@ -72,22 +105,28 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBarLive.setPercentage(this.character.energy);
+                this.hitEnemyAt = new Date().getTime();
+                this.isCharacterJumping(enemy);
+                if (this.isCharacterJumping(enemy)) {
+                    return;
+                } else {
+                    this.character.hit();
+                    this.statusBarLive.setPercentage(this.character.energy);
+                }
             }
         })
     }
 
-    
-/**
- * collect objects
- * @param {object} collectableObj 
- */
+
+    /**
+     * collect objects
+     * @param {object} collectableObj 
+     */
     collectBottles(collectableObj) {
         collectableObj.forEach((obj) => {
             if (this.character.isColliding(obj)) {
                 this.statusBarBottle.hitCollectebleBottle(this.statusBarBottle.bottlesPercentage);
-                this.deleteObject(obj, this.level.bottles); 
+                this.deleteObject(obj, this.level.bottles);
             }
         });
     }
@@ -100,11 +139,11 @@ class World {
         collectableObj.forEach((obj) => {
             if (this.character.isColliding(obj)) {
                 this.statusBarCoin.hitCollectebleCoin(this.statusBarCoin.coinPercentage);
-                this.deleteObject(obj, this.level.coins); 
+                this.deleteObject(obj, this.level.coins);
             }
         });
     }
-    
+
     /**
      * delete object and redraw world
      * @param {obj} obj to delete
@@ -114,10 +153,11 @@ class World {
         let index = arr.indexOf(obj);
         arr.splice(index, 1);
         this.draw();
+
     }
 
     isBossInRange() {
-        if(this.character.x > 2400) {
+        if (this.character.x > 2400) {
             this.addToMap(this.statusBarBoss);
         }
     }
