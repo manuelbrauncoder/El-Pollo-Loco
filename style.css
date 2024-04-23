@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -10,12 +11,63 @@ body {
     justify-content: center;
     gap: 32px;
     height: 100vh;
-    background-image: url('img/5_background/complete_background.png');
+    background-image: url('img/desert.png');
     background-size: cover;
     background-repeat: no-repeat;
-    backdrop-filter: grayscale(70%);
+    backdrop-filter: grayscale(25%);
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 80px;
+    letter-spacing: 4px;
+    text-shadow: 5px 5px 6px rgba(0, 0, 0, 0.6);
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 720px;
+    letter-spacing: 1px;
+
+    & span {
+        font-size: 32px;
+    }
+}
+
+.bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 720px;
+    font-size: 24px;
+    letter-spacing: 1px;
 }
 
 canvas {
     background-color: black;
+    display: block;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+    border-radius: 8px;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+
+   
+
+    h1 {
+        display: none;
+    }
 }

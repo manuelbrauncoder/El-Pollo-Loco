@@ -86,19 +86,16 @@ class Character extends MovableObject {
 
         }, 1000 / 60);
 
-     let charCheckInterval = setInterval(() => {
+        let charCheckInterval = setInterval(() => {
             if (this.isDead()) {
-                this.repetitions ++;
+                this.repetitions++;
                 this.playAnimation(this.IMAGES_DEAD);
                 if (this.repetitions == 20) {
-                    console.log('!!', this.repetitions);
                     clearInterval(charCheckInterval);
                     this.loadImage('img/2_character_pepe/5_dead/D-57.png');
                     this.world.clearAllIntervals();
                 }
-
-               
-            } else if(this.isHurt()) {
+            } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURTING);
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
