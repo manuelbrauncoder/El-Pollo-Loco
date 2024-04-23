@@ -42,6 +42,14 @@ class World {
         this.intervalIds.push(id);
     }
 
+    stopGame() {
+        this.intervalIds.forEach(clearInterval);
+    }
+
+    clearAllIntervals() {
+        for (let i = 1; i < 9999; i++) window.clearInterval(i);
+      }
+
 
     /**
      * start checks
@@ -64,6 +72,11 @@ class World {
         }
     }
 
+    /**
+     * check if character jumped before collide with enemy
+     * @param {object} enemy 
+     * @returns 
+     */
     isCharacterJumping(enemy) {
         let timeDifference = this.hitEnemyAt - this.jumpedAt;
         if (timeDifference <= 500) {
@@ -75,6 +88,9 @@ class World {
         }
     }
 
+    /**
+     * check if bottle is hitting enemy
+     */
     hitEnemyWithBotte() {
         this.level.enemies.forEach((enemy) => {
             this.throwableObjects.forEach((o) => {

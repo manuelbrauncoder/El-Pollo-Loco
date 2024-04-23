@@ -46,6 +46,8 @@ class Character extends MovableObject {
     walking_sound = new Audio('audio/running.mp3');
     jumping_sound = new Audio('audio/jumping.mp3');
     throwing_sound = new Audio('audio/throwing.mp3');
+    repetitions = 0;
+
 
 
     constructor() {
@@ -84,10 +86,18 @@ class Character extends MovableObject {
 
         }, 1000 / 60);
 
-       setInterval(() => {
+     let charCheckInterval = setInterval(() => {
             if (this.isDead()) {
+                this.repetitions ++;
                 this.playAnimation(this.IMAGES_DEAD);
-                //this.clearAllIntervals();
+                if (this.repetitions == 20) {
+                    console.log('!!', this.repetitions);
+                    clearInterval(charCheckInterval);
+                    this.loadImage('img/2_character_pepe/5_dead/D-57.png');
+                    this.world.clearAllIntervals();
+                }
+
+               
             } else if(this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURTING);
             } else if (this.isAboveGround()) {
