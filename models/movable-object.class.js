@@ -4,8 +4,8 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     speedX = 0;
     acceleration = 2;
-    energy = 100;
-    lastHit = 0;
+    
+    
 
     applyGravity() {
         setInterval(() => {
@@ -18,7 +18,7 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        if (this instanceof ThrowableObject) { // throwable object should always fall
+        if (this instanceof ThrowableObject) {
             return true;
         } else {
             return this.y < 210;
@@ -34,7 +34,7 @@ class MovableObject extends DrawableObject {
     }
 
     playAnimation(images) {
-        let i = this.currentImage % images.length; // modulo: i startet bei 0 bis zur länge des array. Dann geht es wieder bei 0 los
+        let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
@@ -56,8 +56,8 @@ class MovableObject extends DrawableObject {
         this.speedY = 25;
     }
 
-    hit() {
-        this.energy -= 5;
+    hit(damage) {
+        this.energy -= damage;
         if (this.energy <= 0) {
             this.energy = 0;
         } else {
@@ -72,7 +72,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit; // difference in ms
         timepassed = timepassed / 1000; // difference in sec
-        return timepassed < 1;
+        return timepassed < 2;
     }
 
     isColliding(obj) {

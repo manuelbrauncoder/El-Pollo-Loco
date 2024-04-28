@@ -72,11 +72,13 @@ class Character extends MovableObject {
     jumping_sound = new Audio('audio/jumping.mp3');
     throwing_sound = new Audio('audio/throwing.mp3');
     repetitions = 0;
+    energy = 100;
+    lastHit = 0;
 
 
 
     constructor() {
-        super().loadImage('img/2_character_pepe/1_idle/idle/I-1.png');      // super() wird nur am Anfang angegeben. Die Funktionen danach werden mit this.fn-Name aufgerufen
+        super().loadImage('img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURTING);
@@ -87,70 +89,106 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    jump() {
+        super.jump();
+        this.jumping_sound.play();
+    }
+
+    moveRight() {
+        super.moveRight();
+        this.otherDirection = false;
+        this.walking_sound.play();
+    }
+
+    moveLeft() {
+        super.moveLeft();
+        this.otherDirection = true;
+        this.walking_sound.play();
+    }
+
+    isJumping() {
+        return this.world.keyboard.SPACE && !this.isAboveGround();
+    }
+
+    isMovingLeft() {
+        return this.world.keyboard.LEFT && this.x > 0;
+    }
+
+    isMovingRight() {
+        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+    }
+
+    playDeathAnimation() {
+        this.isStanding = false;
+        this.repetitions++;
+        this.playAnimation(this.IMAGES_DEAD);
+        if (this.repetitions == 20) {
+            this.isStanding = false;
+            this.world.clearAllIntervals();
+            this.loadImage('img/2_character_pepe/5_dead/D-57.png');
+        }
+    }
+
+    playHurtAnimation() {
+        this.isStanding = false;
+        this.playAnimation(this.IMAGES_HURTING);
+    }
+
+    playJumpAnimation() {
+        this.isStanding = false;
+        this.playAnimation(this.IMAGES_JUMPING);
+    }
+
+    isInIdle() {
+        return this.isStanding === true && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround();
+    }
+
+    playIdleAnimation() {
+        if (this.isObjStanding(this.isStandingSince, 3000)) {
+            this.playAnimation(this.IMAGES_IDLE);
+        }
+        if (this.isObjStanding(this.isStandingSince, 6000)) {
+            this.playAnimation(this.IMAGES_SLEEP);
+        }
+    }
+
+    isNotMoving() {
+        return !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround();
+    }
+
+    saveStandingSinceTime() {
+        this.isStandingSince = new Date().getTime();
+        this.isStanding = true;
+    }
+
+    isMovingLeftOrRight() {
+        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+    }
+
+    playMovingAnimation() {
+        this.isStanding = false;
+        this.playAnimation(this.IMAGES_WALKING);
+    }
+
+    animateCharacter() {
+        if (this.isDead()) this.playDeathAnimation();
+        else if (this.isHurt()) this.playHurtAnimation();
+        else if (this.isAboveGround()) this.playJumpAnimation();
+        else if (this.isInIdle()) this.playIdleAnimation();
+        else if (this.isNotMoving()) this.saveStandingSinceTime();
+        else if (this.isMovingLeftOrRight()) this.playMovingAnimation(); 
+    }
+
+    moveCharacter() {
+        this.walking_sound.pause();
+        if (this.isMovingRight()) this.moveRight();
+        if (this.isMovingLeft()) this.moveLeft();
+        if (this.isJumping()) this.jump();
+        this.world.camera_x = -this.x + 100;
+    }
+
     animate() {
-        setInterval(() => {
-
-            this.walking_sound.pause();
-
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.moveRight();
-                this.otherDirection = false;
-                this.walking_sound.play();
-            }
-
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.moveLeft();
-                this.otherDirection = true;
-                this.walking_sound.play();
-            }
-
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
-                this.jumping_sound.play();
-            }
-
-            this.world.camera_x = -this.x + 100;
-
-        }, 1000 / 60);
-
-        let charCheckInterval = setInterval(() => {
-            if (this.isDead()) {
-                this.isStanding = false;
-                this.repetitions++;
-                this.playAnimation(this.IMAGES_DEAD);
-
-                if (this.repetitions == 20) {
-                    this.isStanding = false;
-                    this.world.clearAllIntervals();
-                    this.loadImage('img/2_character_pepe/5_dead/D-57.png');
-                }
-            } else if (this.isHurt()) {
-                this.isStanding = false;
-                this.playAnimation(this.IMAGES_HURTING);
-
-            } else if (this.isAboveGround()) {
-                this.isStanding = false;
-                this.playAnimation(this.IMAGES_JUMPING);
-                
-            } else if(this.isStanding === true && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround()) {
-                if(this.isObjStanding(this.isStandingSince, 3000)) {
-                    this.playAnimation(this.IMAGES_IDLE);
-                }
-                if(this.isObjStanding(this.isStandingSince, 6000)) {
-                    this.playAnimation(this.IMAGES_SLEEP);
-                }
-            
-            } else if(!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround()) {
-                this.isStandingSince = new Date().getTime();
-                this.isStanding = true;
-                
-             
-            } else {
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.isStanding = false;
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
-            }
-        }, 50)
+        setInterval(() => this.moveCharacter(), 1000 / 60);
+        setInterval(() => this.animateCharacter(), 200);
     }
 }

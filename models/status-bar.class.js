@@ -21,7 +21,4 @@ class Statusbar extends DrawableObject {
         }
         return Math.floor(this.percentage / 20);
     }
-
-   
-    
 }

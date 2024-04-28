@@ -10,6 +10,7 @@ class World {
     statusBarBottle = new StatusbarBottle();
     statusBar = new Statusbar();
     statusBarBoss = new StatusbarEndboss();
+    endboss = new Endboss();
     throwableObjects = [];
     bottle = new Bottle();
     jumpedAt;
@@ -34,7 +35,7 @@ class World {
 
     /**
      * start interval
-     * @param {function} fn for to repeat
+     * @param {function} fn to repeat
      * @param {number} time for the interval
      */
     setStoppableInterval(fn, time) {
@@ -48,7 +49,7 @@ class World {
 
     clearAllIntervals() {
         for (let i = 1; i < 9999; i++) window.clearInterval(i);
-      }
+    }
 
 
     /**
@@ -95,8 +96,15 @@ class World {
         this.level.enemies.forEach((enemy) => {
             this.throwableObjects.forEach((o) => {
                 if (o.isColliding(enemy)) {
-                    console.log('hit with bottle!', o, enemy);
-                    this.deleteObject(enemy, this.level.enemies);
+                    if (enemy instanceof ChickenSmall) {
+                        this.deleteObject(enemy, this.level.enemies);    
+                    } else if (enemy instanceof Endboss) {      
+                        this.deleteObject(o, this.throwableObjects);
+                        this.endboss.hit(20);
+                        this.statusBarBoss.setHealth(this.endboss.energy);
+                    } else if (enemy instanceof Chicken) {
+                        this.deleteObject(enemy, this.level.enemies);  
+                    }
                 }
             })
         })
@@ -126,7 +134,7 @@ class World {
                 if (this.isCharacterJumping(enemy)) {
                     return;
                 } else {
-                    this.character.hit();
+                    this.character.hit(5);
                     this.statusBarLive.setPercentage(this.character.energy);
                 }
             }
@@ -184,7 +192,16 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    // canvas wird gelöscht
         this.ctx.translate(this.camera_x, 0);
+        this.addMovableObjectsToMap();
+        this.addFixedObjectsToMap();
+        this.ctx.translate(-this.camera_x, 0);
+        let self = this;                        // this funktioniert nicht in der folgenden Funktion, deswegen wird es einer Variable zugewiesen
+        requestAnimationFrame(function () {
+            self.draw();
+        });
+    }
 
+    addMovableObjectsToMap() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
@@ -192,20 +209,15 @@ class World {
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
-        // --------------Space for fixed Objects-------------------
+    }
+
+    addFixedObjectsToMap() {
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBarLive);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
         this.isBossInRange();
         this.ctx.translate(this.camera_x, 0);
-        // --------------Space for fixed Objects-------------------
-        this.ctx.translate(-this.camera_x, 0);
-
-        let self = this;                        // this funktioniert nicht in der folgenden Funktion, deswegen wird es einer Variable zugewiesen
-        requestAnimationFrame(function () {
-            self.draw();
-        });
     }
 
     /**
