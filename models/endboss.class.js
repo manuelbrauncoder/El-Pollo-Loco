@@ -55,9 +55,10 @@ class Endboss extends MovableObject {
     playDeathAnimation() {
         this.repetitions++;
         this.playAnimation(this.IMAGES_DEAD);
-        if (this.repetitions == 10) {
+        if (this.repetitions == 2) {
             this.world.clearAllIntervals();
             this.loadImage('img/4_enemie_boss_chicken/5_dead/G26.png');
+            this.y = 150;
         }
     }
     

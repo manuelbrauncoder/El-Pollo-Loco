@@ -13,8 +13,7 @@ class World {
     statusBarBoss = new StatusbarEndboss();
     throwableObjects = [];
     bottle = new Bottle();
-    jumpedAt;
-    hitEnemyAt;
+    //hitEnemyAt;
     intervalIds = [];
 
     constructor(canvas, keyboard) {
@@ -62,33 +61,11 @@ class World {
         this.collectBottles(this.level.bottles);
         this.collectCoins(this.level.coins);
         this.hitEnemyWithBotte();
-        this.checkCharacterHeight();
     }
 
-    /**
-     * save time if character is on coordinate
-     */
-    checkCharacterHeight() {
-        if (this.character.y <= 50) {
-            this.jumpedAt = new Date().getTime();
-        }
-    }
+  
 
-    /**
-     * check if character jumped before collide with enemy
-     * @param {object} enemy 
-     * @returns 
-     */
-    isCharacterJumping(enemy) {
-        let timeDifference = this.hitEnemyAt - this.jumpedAt;
-        if (timeDifference <= 500) {
-            console.log('enemy killed!');
-            this.deleteObject(enemy, this.level.enemies);
-            return true;
-        } else {
-            return;
-        }
-    }
+   
 
     hitEndboss(throwableObject) {
         this.deleteObject(throwableObject, this.throwableObjects);
@@ -120,22 +97,19 @@ class World {
         }
     }
 
-    /**
-     * check if the character collides with an enemy 
-     */
+
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.hitEnemyAt = new Date().getTime();
-                this.isCharacterJumping(enemy);
-                if (this.isCharacterJumping(enemy)) {
-                    return;
+            if(this.character.isColliding(enemy)) {
+                if(this.character.isAboveGround() && this.character.speedY < 0 ) {
+                    console.log('jumped on enemy!');
+                    this.deleteObject(enemy, this.level.enemies);
                 } else {
                     this.character.hit(5);
                     this.statusBarLive.setPercentage(this.character.energy);
                 }
             }
-        })
+        });
     }
 
 
