@@ -1,5 +1,6 @@
 class World {
     character = new Character();
+    endboss = new Endboss();
     level = level1;
     canvas;
     ctx;    // ctx = context
@@ -10,7 +11,6 @@ class World {
     statusBarBottle = new StatusbarBottle();
     statusBar = new Statusbar();
     statusBarBoss = new StatusbarEndboss();
-    endboss = new Endboss();
     throwableObjects = [];
     bottle = new Bottle();
     jumpedAt;
@@ -31,6 +31,7 @@ class World {
      */
     setWorld() {
         this.character.world = this;
+        this.endboss.world = this;
     }
 
     /**
@@ -89,22 +90,18 @@ class World {
         }
     }
 
-    /**
-     * check if bottle is hitting enemy
-     */
+    hitEndboss(throwableObject) {
+        this.deleteObject(throwableObject, this.throwableObjects);
+        this.endboss.hit(20);
+        this.statusBarBoss.setHealth(this.endboss.energy);
+    }
+
     hitEnemyWithBotte() {
-        this.level.enemies.forEach((enemy) => {
-            this.throwableObjects.forEach((o) => {
-                if (o.isColliding(enemy)) {
-                    if (enemy instanceof ChickenSmall) {
-                        this.deleteObject(enemy, this.level.enemies);    
-                    } else if (enemy instanceof Endboss) {      
-                        this.deleteObject(o, this.throwableObjects);
-                        this.endboss.hit(20);
-                        this.statusBarBoss.setHealth(this.endboss.energy);
-                    } else if (enemy instanceof Chicken) {
-                        this.deleteObject(enemy, this.level.enemies);  
-                    }
+        this.throwableObjects.forEach((throwableObject) => {
+            if (this.endboss.isColliding(throwableObject)) this.hitEndboss(throwableObject);
+            this.level.enemies.forEach((enemy) => {
+                if (throwableObject.isColliding(enemy)) {
+                    this.deleteObject(enemy, this.level.enemies);
                 }
             })
         })
@@ -208,6 +205,7 @@ class World {
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
+        this.addToMap(this.endboss);
         this.addObjectsToMap(this.throwableObjects);
     }
 
