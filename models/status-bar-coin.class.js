@@ -21,32 +21,42 @@ class StatusbarCoin extends Statusbar {
         this.setCoins(this.coinPercentage);
     }
 
+    /**
+     * 
+     * @returns the index for percentage image
+     */
     getIndexForCoinImage() {
         if (this.coinPercentage == 100) {
             return 5;
-        } else if(this.coinPercentage >= 80) {
+        } else if (this.coinPercentage >= 80) {
             return 4;
-        } else if(this.coinPercentage >= 60) {
+        } else if (this.coinPercentage >= 60) {
             return 3;
         } else if (this.coinPercentage >= 40) {
             return 2;
         } else if (this.coinPercentage >= 20) {
             return 1
-        } else if(this.coinPercentage >= 0) {
+        } else if (this.coinPercentage >= 0) {
             return 0;
         }
     }
 
+    /**
+     * increase the coins for the status bar
+     */
     hitCollectebleCoin() {
         this.coinPercentage += 10;
         this.collecting_coin_sound.play();
-        if(this.coinPercentage >= 100) {
+        if (this.coinPercentage >= 100) {
             this.coinPercentage = 100;
         }
-        console.log('coins:', this.coinPercentage);
         this.setCoins(this.coinPercentage);
     }
 
+    /**
+     * set the correct status bar image
+     * @param {number} percentage 
+     */
     setCoins(percentage) {
         this.coinPercentage = percentage;
         let path = this.IMAGES[this.getIndexForCoinImage()];

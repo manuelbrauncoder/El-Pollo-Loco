@@ -3,7 +3,7 @@ class World {
     endboss = new Endboss();
     level = level1;
     canvas;
-    ctx;    // ctx = context
+    ctx;
     keyboard;
     camera_x = 0;
     statusBarLive = new StatusbarLive();
@@ -13,8 +13,8 @@ class World {
     statusBarBoss = new StatusbarEndboss();
     throwableObjects = [];
     bottle = new Bottle();
-    //hitEnemyAt;
     intervalIds = [];
+    deadEnemies = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -26,7 +26,7 @@ class World {
     }
 
     /**
-     * passes the world class to the character class
+     * passes the world class to the character and endboss class
      */
     setWorld() {
         this.character.world = this;
@@ -43,14 +43,19 @@ class World {
         this.intervalIds.push(id);
     }
 
+    /**
+     * stop intervals
+     */
     stopGame() {
         this.intervalIds.forEach(clearInterval);
     }
 
+    /**
+     * stop all intervals
+     */
     clearAllIntervals() {
         for (let i = 1; i < 9999; i++) window.clearInterval(i);
     }
-
 
     /**
      * start checks
@@ -63,25 +68,46 @@ class World {
         this.hitEnemyWithBotte();
     }
 
-  
-
-   
-
+    /**
+     * hit endboss
+     * @param {object} throwableObject 
+     */
     hitEndboss(throwableObject) {
         this.deleteObject(throwableObject, this.throwableObjects);
         this.endboss.hit(20);
         this.statusBarBoss.setHealth(this.endboss.energy);
     }
 
+    /**
+     * hit enemy with botte
+     */
     hitEnemyWithBotte() {
         this.throwableObjects.forEach((throwableObject) => {
             if (this.endboss.isColliding(throwableObject)) this.hitEndboss(throwableObject);
             this.level.enemies.forEach((enemy) => {
                 if (throwableObject.isColliding(enemy)) {
-                    this.deleteObject(enemy, this.level.enemies);
+                    this.killEnemy(enemy);
                 }
             })
         })
+    }
+
+    /**
+     * push enemy object to array and set boolean to true
+     * @param {object} enemy 
+     */
+    killEnemy(enemy) {
+        enemy.isDead = true;
+        this.deadEnemies.push(enemy);
+    }
+
+    /**
+     * 
+     * @param {obj} enemy 
+     * @returns true if enemy is in array
+     */
+    isEnemyDead(enemy) {
+        return this.deadEnemies.some(e => e === enemy);
     }
 
     /**
@@ -97,24 +123,33 @@ class World {
         }
     }
 
-
+    /**
+     * collision control
+     */
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if(this.character.isColliding(enemy)) {
-                if(this.character.isAboveGround() && this.character.speedY < 0 ) {
-                    console.log('jumped on enemy!');
-                    this.deleteObject(enemy, this.level.enemies);
-                } else {
-                    this.character.hit(5);
-                    this.statusBarLive.setPercentage(this.character.energy);
-                }
+            if (this.isJumpingOnEnemy(enemy)) {
+                this.killEnemy(enemy);
+                this.character.jump(10);
+            } else if (this.character.isColliding(enemy) && !this.isEnemyDead(enemy)) {
+                this.character.hit(5);
+                this.statusBarLive.setPercentage(this.character.energy);
             }
-        });
+        })
+    }
+
+    /**
+     * 
+     * @param {object} enemy 
+     * @returns true if character is jumping on enemy
+     */
+    isJumpingOnEnemy(enemy) {
+        return this.character.isAboveGround() && this.character.speedY < 0 && !this.isEnemyDead(enemy) && this.character.isColliding(enemy);
     }
 
 
     /**
-     * collect objects
+     * collect bottles
      * @param {object} collectableObj 
      */
     collectBottles(collectableObj) {
@@ -127,9 +162,9 @@ class World {
     }
 
     /**
- * collect objects
- * @param {object} collectableObj 
- */
+     * collect coins
+     * @param {object} collectableObj 
+     */
     collectCoins(collectableObj) {
         collectableObj.forEach((obj) => {
             if (this.character.isColliding(obj)) {
@@ -148,9 +183,11 @@ class World {
         let index = arr.indexOf(obj);
         arr.splice(index, 1);
         this.draw();
-
     }
 
+    /**
+     * show statusbar for boss
+     */
     isBossInRange() {
         if (this.character.x > 2400) {
             this.addToMap(this.statusBarBoss);
@@ -172,6 +209,9 @@ class World {
         });
     }
 
+    /**
+     * add movable objects to map
+     */
     addMovableObjectsToMap() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.clouds);
@@ -183,6 +223,9 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
     }
 
+    /**
+     * add fixed objects to map
+     */
     addFixedObjectsToMap() {
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBarLive);

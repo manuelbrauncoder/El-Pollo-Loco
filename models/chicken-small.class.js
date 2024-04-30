@@ -8,6 +8,8 @@ class ChickenSmall extends Chicken {
         'img/3_enemies_chicken/chicken_small/1_walk/3_w.png'
     ];
 
+    IMAGES_DEAD = ['img/3_enemies_chicken/chicken_small/2_dead/dead.png'];
+
     offsetTop = 5;
     offsetBottom = 5;
     offsetRight = 5;
@@ -18,6 +20,7 @@ class ChickenSmall extends Chicken {
         this.x = 200 + Math.random() * 3000;
         this.speed = 0.2 + Math.random() * 0.3;
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_DEAD);
         this.animate();
     }
 }

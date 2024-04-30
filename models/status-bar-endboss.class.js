@@ -19,6 +19,10 @@ class StatusbarEndboss extends Statusbar {
         this.setHealth(100);
     }
 
+    /**
+     * 
+     * @returns index for status bar image
+     */
     getIndexForBossImage() {
         if (this.healthEndboss == 100) {
             return 5;
@@ -35,6 +39,10 @@ class StatusbarEndboss extends Statusbar {
         }
     }
 
+    /**
+     * set correct image for status bar
+     * @param {number} percentage 
+     */
     setHealth(percentage) {
         this.healthEndboss = percentage;
         let path = this.IMAGES[this.getIndexForBossImage()];

@@ -18,6 +18,10 @@ class StatusbarBottle extends Statusbar {
         this.setBottles(this.bottlesPercentage);
     }
 
+    /**
+     * 
+     * @returns index for image
+     */
     getIndexForBottleImage() {
         if (this.bottlesPercentage == 100) {
             return 5;
@@ -34,15 +38,21 @@ class StatusbarBottle extends Statusbar {
         }
     }
 
+    /**
+     * increase percentage if bottle is collected
+     */
     hitCollectebleBottle() {
         this.bottlesPercentage += 10;
         if(this.bottlesPercentage >= 100) {
             this.bottlesPercentage = 100;
         }
-        console.log('bottles:', this.bottlesPercentage);
         this.setBottles(this.bottlesPercentage);
     }
 
+    /**
+     * set collected bottles in percentage
+     * @param {number} percentage 
+     */
     setBottles(percentage) {
         this.bottlesPercentage = percentage;
         let path = this.IMAGES[this.getIndexForBottleImage()];

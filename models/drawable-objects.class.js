@@ -16,23 +16,39 @@ class DrawableObject {
 
     }
 
+    /**
+     * create a ne image
+     * @param {string} path 
+     */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
-    loadImages(arr) {                       // läd images aus einem array, array wird via parameter übergeben
-        arr.forEach((path) => {             // in dem array stehen die einzelnen dateipfade // Das Array ist ein Objekt
-            let img = new Image();          // Variable für neues img wird deklariert
-            img.src = path;                 // pfad wird zugewiesen
-            this.imageCache[path] = img;    // pfad wird dem img zugewiesen
+    /**
+     * create new images from array
+     * @param {Array} arr 
+     */
+    loadImages(arr) {                      
+        arr.forEach((path) => {             
+            let img = new Image();      
+            img.src = path;
+            this.imageCache[path] = img;
         });
     }
 
+    /**
+     * draw image
+     * @param {context} ctx 
+     */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
+    /**
+     * draw a frame around the object
+     * @param {context} ctx 
+     */
     drawFrame(ctx) {
         if (this instanceof Character || this instanceof Chicken || this instanceof Bottle || this instanceof Coin || this instanceof Endboss) {
             ctx.beginPath();
@@ -43,6 +59,10 @@ class DrawableObject {
         }
     }
 
+    /**
+     * draw the offset frame around the object
+     * @param {context} ctx 
+     */
     drawOffsetFrame(ctx) {
         if(this instanceof Character || this instanceof Chicken || this instanceof Bottle || this instanceof Coin || this instanceof Endboss) {
             ctx.beginPath();

@@ -89,35 +89,60 @@ class Character extends MovableObject {
         this.animate();
     }
 
-    jump() {
-        super.jump();
+    /**
+     * 
+     * @param {number} speed for jumping
+     */
+    jump(speed) {
+        super.jump(speed);
         this.jumping_sound.play();
     }
 
+    /**
+     * character moving right
+     */
     moveRight() {
         super.moveRight();
         this.otherDirection = false;
         this.walking_sound.play();
     }
 
+    /**
+     * character moving left
+     */
     moveLeft() {
         super.moveLeft();
         this.otherDirection = true;
         this.walking_sound.play();
     }
 
+    /**
+     * 
+     * @returns true if character is jumping
+     */
     isJumping() {
         return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 
+    /**
+     * 
+     * @returns boolean
+     */
     isMovingLeft() {
         return this.world.keyboard.LEFT && this.x > 0;
     }
 
+    /**
+     * 
+     * @returns boolean
+     */
     isMovingRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
     }
 
+    /**
+     * play death animation and stop game
+     */
     playDeathAnimation() {
         this.isStanding = false;
         this.repetitions++;
@@ -129,20 +154,33 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * play animation for character hurting
+     */
     playHurtAnimation() {
         this.isStanding = false;
         this.playAnimation(this.IMAGES_HURTING);
     }
 
+    /**
+     * play animation for character jumping
+     */
     playJumpAnimation() {
         this.isStanding = false;
         this.playAnimation(this.IMAGES_JUMPING);
     }
 
+    /**
+     * 
+     * @returns true if character is in idle
+     */
     isInIdle() {
         return this.isStanding === true && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround();
     }
 
+    /**
+     * play idle or sleep animation
+     */
     playIdleAnimation() {
         if (this.isObjStanding(this.isStandingSince, 3000)) {
             this.playAnimation(this.IMAGES_IDLE);
@@ -152,24 +190,41 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * 
+     * @returns true if character is not moving
+     */
     isNotMoving() {
         return !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround();
     }
 
+    /**
+     * save time in variable
+     */
     saveStandingSinceTime() {
         this.isStandingSince = new Date().getTime();
         this.isStanding = true;
     }
 
+    /**
+     * 
+     * @returns true if character is moving left or right
+     */
     isMovingLeftOrRight() {
         return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
     }
 
+    /**
+     * play animation for character is moving
+     */
     playMovingAnimation() {
         this.isStanding = false;
         this.playAnimation(this.IMAGES_WALKING);
     }
 
+    /**
+     * animate character
+     */
     animateCharacter() {
         if (this.isDead()) this.playDeathAnimation();
         else if (this.isHurt()) this.playHurtAnimation();
@@ -179,14 +234,20 @@ class Character extends MovableObject {
         else if (this.isMovingLeftOrRight()) this.playMovingAnimation(); 
     }
 
+    /**
+     * move character
+     */
     moveCharacter() {
         this.walking_sound.pause();
         if (this.isMovingRight()) this.moveRight();
         if (this.isMovingLeft()) this.moveLeft();
-        if (this.isJumping()) this.jump();
+        if (this.isJumping()) this.jump(25);
         this.world.camera_x = -this.x + 100;
     }
 
+    /**
+     * animate intervals
+     */
     animate() {
         setInterval(() => this.moveCharacter(), 1000 / 60);
         setInterval(() => this.animateCharacter(), 200);

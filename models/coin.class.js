@@ -15,6 +15,10 @@ class Coin extends CollectableObject {
         this.y = this.possibleY[this.generateRndIndex()];
     }
 
+    /**
+     * 
+     * @returns random index between 0 and 3
+     */
     generateRndIndex() {
         let rndIndex = Math.random() * 4;
         let roundedIndex = Math.round(rndIndex);

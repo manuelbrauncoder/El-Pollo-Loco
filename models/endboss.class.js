@@ -52,6 +52,9 @@ class Endboss extends MovableObject {
         this.x = 3000;
     }
 
+    /**
+     * play death animation for endboss
+     */
     playDeathAnimation() {
         this.repetitions++;
         this.playAnimation(this.IMAGES_DEAD);
@@ -62,21 +65,17 @@ class Endboss extends MovableObject {
         }
     }
     
+    /**
+     * animate endboss
+     */
     animate() {
         setInterval(() => {
             if (this.isHurt()) {
-                
                 this.playAnimation(this.IMAGES_HURT);
-                
-               
             } else if(this.isDead()) {
-               
                 this.playDeathAnimation();
-
             } else {
-                this.playAnimation(this.IMAGES_ALERT);
-                
-                
+                this.playAnimation(this.IMAGES_ALERT);  
             }
         }, 200);
     }
