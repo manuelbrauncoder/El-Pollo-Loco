@@ -9,6 +9,7 @@ class StatusbarBottle extends Statusbar {
     ];
     
     bottlesPercentage = 0;
+    collecting_Bottle_Sound = new Audio('audio/collect_Bottles.mp3');
 
     constructor() {
         super();
@@ -43,6 +44,7 @@ class StatusbarBottle extends Statusbar {
      */
     hitCollectebleBottle() {
         this.bottlesPercentage += 10;
+        this.collecting_Bottle_Sound.play();
         if(this.bottlesPercentage >= 100) {
             this.bottlesPercentage = 100;
         }

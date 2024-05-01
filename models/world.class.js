@@ -22,7 +22,9 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.setStoppableInterval(this.run.bind(this), 100);
+        this.setStoppableInterval(this.run.bind(this), 10);
+        this.setStoppableInterval(this.checkThrowObjects.bind(this), 150);
+        this.setStoppableInterval(this.checkCollisions.bind(this), 20);
     }
 
     /**
@@ -61,11 +63,9 @@ class World {
      * start checks
      */
     run() {
-        this.checkCollisions();
-        this.checkThrowObjects();
         this.collectBottles(this.level.bottles);
         this.collectCoins(this.level.coins);
-        this.hitEnemyWithBotte();
+        this.hitEnemyWithBottle();
     }
 
     /**
@@ -73,20 +73,25 @@ class World {
      * @param {object} throwableObject 
      */
     hitEndboss(throwableObject) {
+        throwableObject.isDestroyed = true;
         this.deleteObject(throwableObject, this.throwableObjects);
         this.endboss.hit(20);
         this.statusBarBoss.setHealth(this.endboss.energy);
     }
 
     /**
-     * hit enemy with botte
+     * hit enemy with bottle
      */
-    hitEnemyWithBotte() {
+    hitEnemyWithBottle() {
         this.throwableObjects.forEach((throwableObject) => {
             if (this.endboss.isColliding(throwableObject)) this.hitEndboss(throwableObject);
             this.level.enemies.forEach((enemy) => {
                 if (throwableObject.isColliding(enemy)) {
                     this.killEnemy(enemy);
+                    throwableObject.isDestroyed = true;
+                    if(throwableObject.bottleIsSplashed) {
+                        this.deleteObject(throwableObject, this.throwableObjects);
+                    }
                 }
             })
         })
@@ -114,13 +119,25 @@ class World {
      * throw objects if key F is pressed, and bottles collected
      */
     checkThrowObjects() {
-        if (this.keyboard.KEY_F && this.statusBarBottle.bottlesPercentage >= 10) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-            this.throwableObjects.push(bottle);
-            this.statusBarBottle.bottlesPercentage -= 10;
-            this.statusBarBottle.setBottles(this.statusBarBottle.bottlesPercentage);
-            this.character.throwing_sound.play();
+        if (this.isBottleThrown()) {
+            this.throwBottle();
         }
+    }
+
+    throwBottle() {
+        let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+        this.throwableObjects.push(bottle);
+        this.statusBarBottle.bottlesPercentage -= 10;
+        this.statusBarBottle.setBottles(this.statusBarBottle.bottlesPercentage);
+        this.character.throwing_sound.play();
+    }
+
+    /**
+     * 
+     * @returns true if f is pressed and bottles are collected
+     */
+    isBottleThrown() {
+        return this.keyboard.KEY_F && this.statusBarBottle.bottlesPercentage >= 10
     }
 
     /**
@@ -237,6 +254,7 @@ class World {
 
     /**
      * add object to map
+     * remove // to see the frames
      * @param {object} movableObject 
      */
     addToMap(movableObject) {
@@ -244,8 +262,8 @@ class World {
             this.flipImage(movableObject);
         }
         movableObject.draw(this.ctx);
-        movableObject.drawFrame(this.ctx);
-        movableObject.drawOffsetFrame(this.ctx);
+        //movableObject.drawFrame(this.ctx);
+        //movableObject.drawOffsetFrame(this.ctx);
 
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
@@ -267,10 +285,10 @@ class World {
      * @param {object} movableObject 
      */
     flipImage(movableObject) {
-        this.ctx.save();    // speichert die aktuellen ctx (context) informationen ab
-        this.ctx.translate(movableObject.width, 0); // verschiebt das bild
-        this.ctx.scale(-1, 1);  // spiegelt das bild
-        movableObject.x = movableObject.x * -1; // da auch das koordinatensystem sich dreht, muss die x Koordinate gespiegelt werden
+        this.ctx.save();
+        this.ctx.translate(movableObject.width, 0);
+        this.ctx.scale(-1, 1);
+        movableObject.x = movableObject.x * -1;
     }
 
     /**
@@ -279,6 +297,6 @@ class World {
      */
     flipImageBack(movableObject) {
         movableObject.x = movableObject.x * -1;
-        this.ctx.restore();     // stellt die informationen zum ctx von oben wieder her
+        this.ctx.restore();
     }
 }

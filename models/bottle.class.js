@@ -3,10 +3,13 @@ class Bottle extends CollectableObject {
     width = 70;
     height = 70;
 
+
     offsetTop = 10;
     offsetBottom = 5;
     offsetRight = 10;
     offsetLeft = 20;
+
+    
 
     constructor() {
         super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');

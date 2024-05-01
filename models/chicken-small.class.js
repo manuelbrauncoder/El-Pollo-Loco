@@ -12,8 +12,8 @@ class ChickenSmall extends Chicken {
 
     offsetTop = 5;
     offsetBottom = 5;
-    offsetRight = 5;
-    offsetLeft = 5;
+    offsetRight = -5;
+    offsetLeft = -5;
 
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');

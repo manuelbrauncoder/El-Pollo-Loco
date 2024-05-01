@@ -11,6 +11,8 @@ class Chicken extends MovableObject {
 
     IMAGES_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
+    dead_sound = new Audio('audio/splash.mp3');
+
     offsetTop = 5;
     offsetBottom = 5;
     offsetRight = 5;
@@ -37,6 +39,7 @@ class Chicken extends MovableObject {
 
         let animateIntervall = setInterval(() => {
             if (this.isDead) {
+                this.dead_sound.play();
                 this.stopAnimation();
                 this.playAnimation(this.IMAGES_DEAD);
             } else {
