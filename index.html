@@ -36,14 +36,16 @@
 
 </head>
 
-<body onload="init()">
+<body>
     <div class="top">
-        <span onclick="initLevel()">Play</span>
+        <span id="startBtn" class="cp" onclick="startGame()">Play</span>
+        <span id="stopBtn" class="cp d-none" onclick="stopGame()">Stop</span>
         <h1>El pollo loco</h1>
-        <span>Fullscreen</span>
+        <span class="cp" onclick="fullScreen()">Fullscreen</span>
     </div>
 
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <div id="startScreen" class="startScreen"><img src="./img/9_intro_outro_screens/start/startscreen_2.png" alt=""></div>
+    <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
 
     <div class="bottom">
         <span>Arrow Left/Right: Walk</span><span>Space: Jump</span><span>F: Throw</span>

@@ -87,6 +87,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SLEEP);
         this.applyGravity();
         this.animate();
+        this.walking_sound.volume = 0.3;
     }
 
     /**

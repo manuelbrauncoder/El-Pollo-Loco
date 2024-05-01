@@ -12,9 +12,11 @@ class World {
     statusBar = new Statusbar();
     statusBarBoss = new StatusbarEndboss();
     throwableObjects = [];
+    destroyedObjects = [];
     bottle = new Bottle();
     intervalIds = [];
     deadEnemies = [];
+    lastHit;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -74,9 +76,12 @@ class World {
      */
     hitEndboss(throwableObject) {
         throwableObject.isDestroyed = true;
-        this.deleteObject(throwableObject, this.throwableObjects);
-        this.endboss.hit(20);
+        this.destroyedObjects.push(throwableObject);
+        this.endboss.hit(10);
         this.statusBarBoss.setHealth(this.endboss.energy);
+        if (throwableObject.bottleIsSplashed) {
+            this.deleteObject(throwableObject, this.throwableObjects);
+        }
     }
 
     /**
@@ -84,17 +89,21 @@ class World {
      */
     hitEnemyWithBottle() {
         this.throwableObjects.forEach((throwableObject) => {
-            if (this.endboss.isColliding(throwableObject)) this.hitEndboss(throwableObject);
+            if (this.isEndbossHitWithBottle(throwableObject)) this.hitEndboss(throwableObject);
             this.level.enemies.forEach((enemy) => {
-                if (throwableObject.isColliding(enemy)) {
+                if (throwableObject.isColliding(enemy) && !this.isEnemyDead(enemy)) {
                     this.killEnemy(enemy);
                     throwableObject.isDestroyed = true;
-                    if(throwableObject.bottleIsSplashed) {
+                    if (throwableObject.bottleIsSplashed) {
                         this.deleteObject(throwableObject, this.throwableObjects);
                     }
                 }
             })
         })
+    }
+
+    isEndbossHitWithBottle(throwableObject) {
+        return this.endboss.isColliding(throwableObject) && !this.isThrowableObjectDestroyed(throwableObject);
     }
 
     /**
@@ -113,6 +122,10 @@ class World {
      */
     isEnemyDead(enemy) {
         return this.deadEnemies.some(e => e === enemy);
+    }
+
+    isThrowableObjectDestroyed(obj) {
+        return this.destroyedObjects.some(destroyedObject => destroyedObject === obj);
     }
 
     /**
@@ -149,10 +162,22 @@ class World {
                 this.killEnemy(enemy);
                 this.character.jump(10);
             } else if (this.character.isColliding(enemy) && !this.isEnemyDead(enemy)) {
-                this.character.hit(5);
-                this.statusBarLive.setPercentage(this.character.energy);
+                if (this.lastHit === undefined || this.checkLastHit()) {
+                    this.character.hit(5);
+                    this.statusBarLive.setPercentage(this.character.energy);
+                    this.lastHit = new Date().getTime();
+                } else {
+                    return;
+                }
+
             }
         })
+    }
+
+    checkLastHit() {
+        let hit = new Date().getTime();
+        let difference = hit - this.lastHit;
+        return difference >= 500;
     }
 
     /**

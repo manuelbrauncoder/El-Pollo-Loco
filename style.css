@@ -47,6 +47,23 @@ h1 {
     letter-spacing: 1px;
 }
 
+.startScreen {
+    
+    & img {
+        max-width: 792px;
+        max-height: 528px;
+        border-radius: 4px;
+    }
+}
+
+.d-none {
+    display: none;
+}
+
+.cp {
+    cursor: pointer;
+}
+
 canvas {
     background-color: black;
     display: block;
@@ -65,7 +82,7 @@ canvas {
         height: 100vh;
     }
 
-   
+
 
     h1 {
         display: none;

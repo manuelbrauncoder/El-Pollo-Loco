@@ -13,6 +13,7 @@ class ThrowableObject extends MovableObject {
 
     isDestroyed = false;
     bottleIsSplashed = false;
+    repetitions = 0;
 
     IMAGES_BOTTLE_ROTATE = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -38,9 +39,7 @@ class ThrowableObject extends MovableObject {
         this.applyGravity();
         let animateId = setInterval(() => {
             if (this.isDestroyed) {
-                this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
-                this.bottleIsSplashed = true;
-                clearInterval(animateId);
+                this.playSplashAnimation(animateId);
             } else {
                 this.x += 10;
                 this.playAnimation(this.IMAGES_BOTTLE_ROTATE);
@@ -48,5 +47,12 @@ class ThrowableObject extends MovableObject {
         }, 50);
     }
 
-  
+  playSplashAnimation(animateId) {
+    this.repetitions++;
+        this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
+        if (this.repetitions == 20) {
+            clearInterval(animateId);
+            this.bottleIsSplashed = true;
+        }
+  }
 }
