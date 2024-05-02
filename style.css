@@ -48,11 +48,19 @@ h1 {
 }
 
 .startScreen {
+    position: relative;
     
     & img {
         max-width: 792px;
         max-height: 528px;
         border-radius: 4px;
+    }
+
+    & button {
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
@@ -64,6 +72,10 @@ h1 {
     cursor: pointer;
 }
 
+.main {
+    position: relative;
+}
+
 canvas {
     background-color: black;
     display: block;
@@ -71,20 +83,48 @@ canvas {
     border-radius: 8px;
 }
 
+.mobileBtns {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.lower {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px 16px 16px;
+}
+
+.left, .right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+}
+
 @media only screen and (max-width: 720px) {
-    canvas {
+    main {
         width: 100%;
+        height: 100%;
     }
 }
 
 @media only screen and (max-height: 480px) {
-    canvas {
+    main {
         height: 100vh;
     }
 
 
 
-    h1 {
+    h1, .bottom, .top {
         display: none;
     }
 }

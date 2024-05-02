@@ -1,7 +1,7 @@
 class Character extends MovableObject {
     height = 220;
     x = 80;
-    y = 80;
+    y = 0;
     speed = 10;
     isStandingSince;
     isStanding = false;
@@ -122,7 +122,7 @@ class Character extends MovableObject {
      * @returns true if character is jumping
      */
     isJumping() {
-        return this.world.keyboard.SPACE && !this.isAboveGround();
+        return this.world.keyboard.JUMP && !this.isAboveGround();
     }
 
     /**

@@ -44,8 +44,20 @@
         <span class="cp" onclick="fullScreen()">Fullscreen</span>
     </div>
 
-    <div id="startScreen" class="startScreen"><img src="./img/9_intro_outro_screens/start/startscreen_2.png" alt=""></div>
-    <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
+    <div id="startScreen" class="startScreen">
+        <img src="./img/9_intro_outro_screens/start/startscreen_2.png" alt="">
+        <button onclick="startGame()">play</button>
+    </div>
+
+    <div class="main d-none" id="main">
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <div class="mobileBtns">
+            <div class="lower">
+                <div class="left"><button id="left">left</button><button id="right">right</button></div>
+                <div class="right"><button id="jump">jump</button><button id="throw">throw</button></div>
+            </div>
+        </div>
+    </div>
 
     <div class="bottom">
         <span>Arrow Left/Right: Walk</span><span>Space: Jump</span><span>F: Throw</span>

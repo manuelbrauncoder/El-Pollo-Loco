@@ -150,7 +150,7 @@ class World {
      * @returns true if f is pressed and bottles are collected
      */
     isBottleThrown() {
-        return this.keyboard.KEY_F && this.statusBarBottle.bottlesPercentage >= 10
+        return this.keyboard.THROW && this.statusBarBottle.bottlesPercentage >= 10
     }
 
     /**
@@ -245,11 +245,16 @@ class World {
         this.addMovableObjectsToMap();
         this.addFixedObjectsToMap();
         this.ctx.translate(-this.camera_x, 0);
+        this.requestFrame();
+    }
+
+    requestFrame() {
         let self = this;                        // this funktioniert nicht in der folgenden Funktion, deswegen wird es einer Variable zugewiesen
         requestAnimationFrame(function () {
             self.draw();
         });
     }
+
 
     /**
      * add movable objects to map
