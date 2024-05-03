@@ -37,31 +37,45 @@
 </head>
 
 <body>
-    <div class="top">
-        <span id="startBtn" class="cp" onclick="startGame()">Play</span>
-        <span id="stopBtn" class="cp d-none" onclick="stopGame()">Stop</span>
-        <h1>El pollo loco</h1>
-        <span class="cp" onclick="fullScreen()">Fullscreen</span>
+    <div class="d-none mobilePortrait">
+        <div>
+            <span>Turn your device to landscape</span>
+        </div>
     </div>
+    
+    <h1>El Pollo Loco</h1>
 
-    <div id="startScreen" class="startScreen">
-        <img src="./img/9_intro_outro_screens/start/startscreen_2.png" alt="">
-        <button onclick="startGame()">play</button>
-    </div>
-
-    <div class="main d-none" id="main">
-        <canvas id="canvas" width="720" height="480"></canvas>
+    <div class="main" id="main">
+        <div class="upper">
+            <button id="startBtn" onclick="startGame()"><img class="btnImg" src="./img/buttons/play.png" alt=""></button>
+            <button class="d-none" id="stopBtn" onclick="stopGame()"><img class="btnImg" src="./img/buttons/stop.png" alt=""></button>
+            <button id="fullScreenBtn" class="d-none" onclick="fullScreen()"><img class="btnImg" src="./img/buttons/fullscreen.png" alt=""></button>
+        </div>
+        <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
+        <img class="infoScreen" id="startScreen" src="./img/9_intro_outro_screens/start/startscreen_2.png">
+        <img class="infoScreen d-none" id="gameOverScreen" src="./img/9_intro_outro_screens/game_over/game over.png" alt="">
+        <img class="infoScreen d-none" id="lostScreen" src="./img/9_intro_outro_screens/game_over/you lost.png" alt="">
+        
+        
         <div class="mobileBtns">
             <div class="lower">
-                <div class="left"><button id="left">left</button><button id="right">right</button></div>
-                <div class="right"><button id="jump">jump</button><button id="throw">throw</button></div>
+                <div class="left">
+                    <button id="left"><img class="btnImg" src="./img/buttons/left.png" alt=""></button>
+                    <button id="right"><img class="btnImg" src="./img/buttons/right.png" alt=""></button>
+                </div>
+                <div class="right">
+                    <button id="jump"><img class="btnImg" src="./img/buttons/up.png" alt=""></button>
+                    <button class="throwBtn" id="throw">F</button></div>
             </div>
         </div>
     </div>
 
-    <div class="bottom">
-        <span>Arrow Left/Right: Walk</span><span>Space: Jump</span><span>F: Throw</span>
+    <div class="manual">
+        <span>Left / Right: Arrow Keys</span>
+        <span>Jump: Space Key</span>
+        <span>Throw: F Key</span>
     </div>
+   
 </body>
 
 </html>

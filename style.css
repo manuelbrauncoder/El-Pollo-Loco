@@ -10,7 +10,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 32px;
-    height: 100vh;
+    height: 100dvh;
     background-image: url('img/desert.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -22,46 +22,17 @@ h1 {
     font-size: 80px;
     letter-spacing: 4px;
     text-shadow: 5px 5px 6px rgba(0, 0, 0, 0.6);
+    color: rgb(29, 29, 29);
 }
 
-.top {
+.manual {
+    width: 720px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    width: 100%;
-    max-width: 720px;
-    letter-spacing: 1px;
-
-    & span {
-        font-size: 32px;
-    }
-}
-
-.bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 720px;
     font-size: 24px;
     letter-spacing: 1px;
-}
-
-.startScreen {
-    position: relative;
-    
-    & img {
-        max-width: 792px;
-        max-height: 528px;
-        border-radius: 4px;
-    }
-
-    & button {
-        position: absolute;
-        top: 16px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+    color: rgb(29, 29, 29);
 }
 
 .d-none {
@@ -97,34 +68,134 @@ canvas {
     padding: 0 16px 16px 16px;
 }
 
-.left, .right {
+.left,
+.right {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: none;
+.upper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 16px 0 0 0;
+    display: flex;
+    gap: 16px;
 }
 
-@media only screen and (max-width: 720px) {
-    main {
+
+.btnImg {
+    width: 32px;
+    height: 32px;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 223, 2, 0.0);
+    border: unset;
+    cursor: pointer;
+}
+
+.infoScreen {
+    width: 720px;
+    height: auto;
+}
+
+.throwBtn {
+    width: 28px;
+    height: 28px;
+    border: 2.5px solid black;
+    border-radius: 50%;
+    font-family: 'zabras', Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+.mobilePortrait {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255,223,2);
+    background-image: url(./img/2_character_pepe/2_walk/W-21.png);
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    & div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        height: 100%;
+        height: 50%;
+        font-size: 32px;
     }
+}
+
+
+@media only screen and (max-width: 720px) {
+    .main {
+        width: 100%;
+    }
+
+    canvas {
+        width: 100%;
+    }
+
+    .infoScreen {
+        width: 100%;
+        object-fit: cover;
+    }
+
 }
 
 @media only screen and (max-height: 480px) {
-    main {
-        height: 100vh;
+    .main {
+        height: 100dvh;
     }
 
+    canvas {
+        height: 100%;
+    }
 
+    .infoScreen {
+        height: 100%;
+        object-fit: cover;
+    }
 
-    h1, .bottom, .top {
+    h1,
+    .manual {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 950px) {
+    #fullScreenBtn {
+        display: none;
+    }
+}
+
+@media(max-width: 500px) {
+    h1 {
+        font-size: 40px;
+    }
+
+    .manual {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+@media(max-width: 600px) {
+    .mobilePortrait {
+        display: block;
+    }
+
+    .main, h1, .manual {
         display: none;
     }
 }

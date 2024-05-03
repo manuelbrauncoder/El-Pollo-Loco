@@ -17,6 +17,7 @@ class World {
     intervalIds = [];
     deadEnemies = [];
     lastHit;
+    bossIsSpawned = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -26,7 +27,8 @@ class World {
         this.setWorld();
         this.setStoppableInterval(this.run.bind(this), 10);
         this.setStoppableInterval(this.checkThrowObjects.bind(this), 150);
-        this.setStoppableInterval(this.checkCollisions.bind(this), 20);
+        this.setStoppableInterval(this.checkCollisionsWithEnemies.bind(this), 20);
+        this.setStoppableInterval(this.checkCollisionWithEndboss.bind(this), 20);
     }
 
     /**
@@ -77,7 +79,7 @@ class World {
     hitEndboss(throwableObject) {
         throwableObject.isDestroyed = true;
         this.destroyedObjects.push(throwableObject);
-        this.endboss.hit(10);
+        this.endboss.hit(20);
         this.statusBarBoss.setHealth(this.endboss.energy);
         if (throwableObject.bottleIsSplashed) {
             this.deleteObject(throwableObject, this.throwableObjects);
@@ -91,7 +93,7 @@ class World {
         this.throwableObjects.forEach((throwableObject) => {
             if (this.isEndbossHitWithBottle(throwableObject)) this.hitEndboss(throwableObject);
             this.level.enemies.forEach((enemy) => {
-                if (throwableObject.isColliding(enemy) && !this.isEnemyDead(enemy)) {
+                if (this.isEnemyHitWithBottle(throwableObject, enemy)) {
                     this.killEnemy(enemy);
                     throwableObject.isDestroyed = true;
                     if (throwableObject.bottleIsSplashed) {
@@ -100,6 +102,10 @@ class World {
                 }
             })
         })
+    }
+
+    isEnemyHitWithBottle(throwableObject, enemy) {
+        return throwableObject.isColliding(enemy) && !this.isEnemyDead(enemy);
     }
 
     isEndbossHitWithBottle(throwableObject) {
@@ -156,22 +162,33 @@ class World {
     /**
      * collision control
      */
-    checkCollisions() {
+    checkCollisionsWithEnemies() {
         this.level.enemies.forEach((enemy) => {
             if (this.isJumpingOnEnemy(enemy)) {
                 this.killEnemy(enemy);
                 this.character.jump(10);
             } else if (this.character.isColliding(enemy) && !this.isEnemyDead(enemy)) {
                 if (this.lastHit === undefined || this.checkLastHit()) {
-                    this.character.hit(5);
-                    this.statusBarLive.setPercentage(this.character.energy);
-                    this.lastHit = new Date().getTime();
+                    this.characterTakesDamage(5);
                 } else {
                     return;
                 }
-
             }
-        })
+        });
+    }
+
+    characterTakesDamage(dmg) {
+        this.character.hit(dmg);
+        this.statusBarLive.setPercentage(this.character.energy);
+        this.lastHit = new Date().getTime();
+    }
+
+    checkCollisionWithEndboss() {
+        if (this.character.isColliding(this.endboss)) {
+            if (this.lastHit === undefined || this.checkLastHit()) {
+                this.characterTakesDamage(20);
+            }
+        }
     }
 
     checkLastHit() {
@@ -231,8 +248,10 @@ class World {
      * show statusbar for boss
      */
     isBossInRange() {
-        if (this.character.x > 2400) {
+        if (this.character.x > 2400 || this.bossIsSpawned) {
             this.addToMap(this.statusBarBoss);
+            this.endboss.characterIsInRange = true;
+            this.bossIsSpawned = true;
         }
     }
 
@@ -249,7 +268,7 @@ class World {
     }
 
     requestFrame() {
-        let self = this;                        // this funktioniert nicht in der folgenden Funktion, deswegen wird es einer Variable zugewiesen
+        let self = this;
         requestAnimationFrame(function () {
             self.draw();
         });

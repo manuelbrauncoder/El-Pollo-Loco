@@ -9,10 +9,17 @@ class Coin extends CollectableObject {
     offsetRight = 35;
     offsetLeft = 35;
 
+    IMAGES_COINS = [
+        'img/8_coin/coin_1.png',
+        'img/8_coin/coin_2.png'
+    ];
+
     constructor() {
-        super().loadImage('img/8_coin/coin_1.png');
+        super().loadImage(this.IMAGES_COINS[0]);
+        this.loadImages(this.IMAGES_COINS);
         this.x = 200 + Math.random() * 2600;
         this.y = this.possibleY[this.generateRndIndex()];
+        this.blink();
     }
 
     /**
@@ -23,5 +30,11 @@ class Coin extends CollectableObject {
         let rndIndex = Math.random() * 4;
         let roundedIndex = Math.round(rndIndex);
         return roundedIndex;
+    }
+
+    blink() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_COINS);
+        }, 350);
     }
 }

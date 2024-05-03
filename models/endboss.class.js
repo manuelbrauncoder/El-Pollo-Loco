@@ -1,14 +1,13 @@
 class Endboss extends MovableObject {
-
     height = 400;
     width = 250;
-    y = 50;
-
+    y = 55;
+    speed = 1.5;
+    characterIsInRange = false;
     offsetTop = 55;
     offsetBottom = 15;
     offsetRight = 10;
     offsetLeft = 10;
-
     energy = 100;
     lastHit = 0;
     repetitions = 0;
@@ -48,8 +47,10 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_WALKING);
         this.animate();
         this.x = 3000;
+        this.move();
     }
 
     /**
@@ -64,7 +65,7 @@ class Endboss extends MovableObject {
             this.y = 150;
         }
     }
-    
+
     /**
      * animate endboss
      */
@@ -72,11 +73,22 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else if(this.isDead()) {
+            } else if (this.isDead()) {
                 this.playDeathAnimation();
+            } else if(this.characterIsInRange) {
+                this.playAnimation(this.IMAGES_WALKING);
             } else {
-                this.playAnimation(this.IMAGES_ALERT);  
+                this.playAnimation(this.IMAGES_ALERT);
             }
         }, 200);
+    }
+
+    move() {
+        setInterval(() => {
+            if (this.characterIsInRange) {
+                this.moveLeft();
+            }
+
+        }, 50);
     }
 }
