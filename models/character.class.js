@@ -185,7 +185,7 @@ class Character extends MovableObject {
      * play idle or sleep animation
      */
     playIdleAnimation() {
-        if (this.isObjStanding(this.isStandingSince, 3000)) {
+        if (this.isObjStanding(this.isStandingSince, 10)) {
             this.playAnimation(this.IMAGES_IDLE);
         }
         if (this.isObjStanding(this.isStandingSince, 6000)) {
