@@ -12,6 +12,7 @@ class Endboss extends MovableObject {
     lastHit = 0;
     repetitions = 0;
     world;
+    winningSound = new Audio('audio/winningSound.mp3');
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -59,10 +60,14 @@ class Endboss extends MovableObject {
     playDeathAnimation() {
         this.repetitions++;
         this.playAnimation(this.IMAGES_DEAD);
-        if (this.repetitions == 2) {
+        if (this.repetitions == 10) {
             this.world.clearAllIntervals();
             this.loadImage('img/4_enemie_boss_chicken/5_dead/G26.png');
-            this.y = 150;
+            this.height = 200;
+            this.width = 125;
+            this.y = 300;
+            this.winningSound.play();
+            showWiningScreen();
         }
     }
 

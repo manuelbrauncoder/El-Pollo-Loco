@@ -9,7 +9,6 @@ class Character extends MovableObject {
     offsetBottom = 10;
     offsetRight = 15;
     offsetLeft = 20;
-
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -71,11 +70,11 @@ class Character extends MovableObject {
     walking_sound = new Audio('audio/running.mp3');
     jumping_sound = new Audio('audio/jumping.mp3');
     throwing_sound = new Audio('audio/throwing.mp3');
+    losing_sound = new Audio('audio/losingSound.mp3');
+    hurting_sound = new Audio('audio/hurt.mp3');
     repetitions = 0;
     energy = 100;
     lastHit = 0;
-
-
 
     constructor() {
         super().loadImage('img/2_character_pepe/1_idle/idle/I-1.png');
@@ -148,10 +147,12 @@ class Character extends MovableObject {
         this.isStanding = false;
         this.repetitions++;
         this.playAnimation(this.IMAGES_DEAD);
-        if (this.repetitions == 20) {
+        if (this.repetitions == 10) {
             this.isStanding = false;
             this.world.clearAllIntervals();
             this.loadImage('img/2_character_pepe/5_dead/D-57.png');
+            showLosingScreen();
+            this.losing_sound.play();
         }
     }
 
@@ -161,6 +162,7 @@ class Character extends MovableObject {
     playHurtAnimation() {
         this.isStanding = false;
         this.playAnimation(this.IMAGES_HURTING);
+        this.hurting_sound.play();
     }
 
     /**

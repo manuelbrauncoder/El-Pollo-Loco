@@ -2,24 +2,20 @@ class Chicken extends MovableObject {
     y = 345;
     height = 80;
     width = 80;
-    
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
-
     IMAGES_DEAD = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
-
     dead_sound = new Audio('audio/splash.mp3');
-
     offsetTop = 5;
     offsetBottom = 5;
     offsetRight = 5;
     offsetLeft = 5;
     isDead = false;
     energy = 100;
-    moveInterval = [];
+    moveIntervals = [];
 
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
@@ -30,29 +26,53 @@ class Chicken extends MovableObject {
         this.animate();
     }
 
-
+    /**
+     * start intervals for chicken movement and animation
+     */
     animate() {
-        let moveLeftInterval = setInterval(() => {
-            this.moveLeft();
-        }, 1000 / 60);
+        this.move();
+        this.animateChicken();
+    }
 
-
-        let animateIntervall = setInterval(() => {
-            if (this.isDead) {
-                this.dead_sound.play();
-                this.stopAnimation();
-                this.playAnimation(this.IMAGES_DEAD);
+    /**
+     * animation for chicken
+     */
+    animateChicken() {
+        let animateInterval = setInterval(() => {
+            if(this.isDead) {
+                this.animateDeath();
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
             }
-        }, 200)
-
-        this.moveInterval.push(moveLeftInterval, animateIntervall);
+        }, 200);
+        this.moveIntervals.push(animateInterval);
     }
 
+    /**
+     * moving interval
+     */
+    move() {
+        let moveLeftInterval = setInterval(() => {
+            this.moveLeft();
+        }, 1000 / 60);
+        this.moveIntervals.push(moveLeftInterval)
+    }
+
+    /**
+     * clear intervals
+     */
     stopAnimation() {
-        this.moveInterval.forEach(id => clearInterval(id));
-        this.moveInterval = [];
+        this.moveIntervals.forEach(id => clearInterval(id));
+        this.moveIntervals = [];
+    }
+
+    /**
+     * animation for death
+     */
+    animateDeath() {
+        this.dead_sound.play();
+        this.stopAnimation();
+        this.playAnimation(this.IMAGES_DEAD);
     }
 
 }

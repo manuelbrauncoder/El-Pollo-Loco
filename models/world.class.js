@@ -96,12 +96,10 @@ class World {
                 if (this.isEnemyHitWithBottle(throwableObject, enemy)) {
                     this.killEnemy(enemy);
                     throwableObject.isDestroyed = true;
-                    if (throwableObject.bottleIsSplashed) {
-                        this.deleteObject(throwableObject, this.throwableObjects);
-                    }
+                    if (throwableObject.bottleIsSplashed) this.deleteObject(throwableObject, this.throwableObjects);   
                 }
-            })
-        })
+            });
+        });
     }
 
     isEnemyHitWithBottle(throwableObject, enemy) {
