@@ -9,6 +9,9 @@ class Keyboard {
         this.bindTouchEvents();
     }
 
+    /**
+     * toggle booleans if keys are pressed
+     */
     bindKeyEvents() {
         document.addEventListener('keydown', (e) => {
             if(e.keyCode == 32) { this.JUMP = true };
@@ -24,6 +27,9 @@ class Keyboard {
         });
     }
 
+    /**
+     * toggle booleans if mobile buttons are touched
+     */
     bindTouchEvents() {
         const touchButtons = ['left', 'right', 'jump', 'throw'];
         touchButtons.forEach(button => {

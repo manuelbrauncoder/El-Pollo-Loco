@@ -13,6 +13,8 @@ class Endboss extends MovableObject {
     repetitions = 0;
     world;
     winningSound = new Audio('audio/winningSound.mp3');
+    hitBossSound = new Audio('audio/hitBoss.mp3');
+    bossDead = new Audio('audio/bossDeath.mp3');
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -52,6 +54,9 @@ class Endboss extends MovableObject {
         this.animate();
         this.x = 3000;
         this.move();
+        sounds.push(this.winningSound);
+        sounds.push(this.hitBossSound);
+        sounds.push(this.bossDead);
     }
 
     /**
@@ -60,15 +65,23 @@ class Endboss extends MovableObject {
     playDeathAnimation() {
         this.repetitions++;
         this.playAnimation(this.IMAGES_DEAD);
+        this.bossDead.play();
         if (this.repetitions == 10) {
-            this.world.clearAllIntervals();
-            this.loadImage('img/4_enemie_boss_chicken/5_dead/G26.png');
-            this.height = 200;
-            this.width = 125;
-            this.y = 300;
-            this.winningSound.play();
-            showWiningScreen();
+            this.handleDeath();
         }
+    }
+
+    /**
+     * stop game, show dead boss, play sound and show winning screen
+     */
+    handleDeath() {
+        this.world.clearAllIntervals();
+        this.loadImage('img/4_enemie_boss_chicken/5_dead/G26.png');
+        this.height = 200;
+        this.width = 125;
+        this.y = 300;
+        this.winningSound.play();
+        showWiningScreen();
     }
 
     /**
@@ -78,9 +91,10 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.hitBossSound.play();
             } else if (this.isDead()) {
                 this.playDeathAnimation();
-            } else if(this.characterIsInRange) {
+            } else if (this.characterIsInRange) {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.playAnimation(this.IMAGES_ALERT);
@@ -88,12 +102,14 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    /**
+     * moving endboss
+     */
     move() {
         setInterval(() => {
             if (this.characterIsInRange) {
                 this.moveLeft();
             }
-
         }, 50);
     }
 }

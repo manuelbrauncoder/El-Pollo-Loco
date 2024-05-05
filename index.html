@@ -53,12 +53,14 @@
             <button id="startBtn" onclick="startGame()"><img class="btnImg" src="./img/buttons/play.png" alt=""></button>
             <button class="d-none" id="stopBtn" onclick="stopGame()"><img class="btnImg" src="./img/buttons/stop.png" alt=""></button>
             <button id="fullScreenBtn" class="d-none" onclick="fullScreen()"><img class="btnImg" src="./img/buttons/fullscreen.png" alt=""></button>
+            <button onclick="toggleAudio()" id="muteBtn" class="d-none"><img class="btnImg" src="./img/mute.png" alt=""></button>
+            <button onclick="toggleAudio()" id="unmuteBtn"><img class="btnImg" src="./img/unmute.png" alt=""></button>
         </div>
         <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
-        <img class="infoScreen" id="startScreen" src="./img/9_intro_outro_screens/start/startscreen_2.png">
-        <img class="infoScreen d-none" id="gameOverScreen" src="./img/9_intro_outro_screens/game_over/game over.png" alt="">
-        <img class="infoScreen d-none" id="lostScreen" src="./img/9_intro_outro_screens/game_over/you lost.png" alt="">
         
+        <img class="infoScreen" id="startScreen" src="./img/9_intro_outro_screens/start/startscreen_2.png">
+        <img class="infoScreen d-none" id="gameOverScreen" src="./img/9_intro_outro_screens/win/won_2.png" alt="">
+        <img class="infoScreen d-none" id="lostScreen" src="./img/9_intro_outro_screens/game_over/you lost.png" alt="">
         
         <div class="mobileBtns">
             <div class="lower">

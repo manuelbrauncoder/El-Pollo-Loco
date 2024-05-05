@@ -24,6 +24,7 @@ class Chicken extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
         this.animate();
+        sounds.push(this.dead_sound);
     }
 
     /**

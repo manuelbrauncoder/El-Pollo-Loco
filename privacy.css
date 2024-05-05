@@ -11,5 +11,5 @@ body {
     justify-content: center;
     align-items: flex-start;
     gap: 16px;
-    background-color: rgba(195, 169, 0, 0.5);
+    background-image: url(./img/desert.png);
 }

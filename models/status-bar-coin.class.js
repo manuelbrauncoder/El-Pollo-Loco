@@ -19,6 +19,7 @@ class StatusbarCoin extends Statusbar {
         this.x = 0;
         this.y = 40;
         this.setCoins(this.coinPercentage);
+        sounds.push(this.collecting_coin_sound);
     }
 
     /**
