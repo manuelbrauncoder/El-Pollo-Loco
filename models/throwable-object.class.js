@@ -40,6 +40,8 @@ class ThrowableObject extends MovableObject {
         let animateId = setInterval(() => {
             if (this.isDestroyed) {
                 this.playSplashAnimation(animateId);
+            } if (this.bottleHitGround()) {
+                this.playSplashAnimation(animateId);
             } else {
                 this.x += 10;
                 this.playAnimation(this.IMAGES_BOTTLE_ROTATE);
@@ -47,12 +49,16 @@ class ThrowableObject extends MovableObject {
         }, 50);
     }
 
-  playSplashAnimation(animateId) {
-    this.repetitions++;
+    playSplashAnimation(animateId) {
+        this.repetitions++;
         this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
-        if (this.repetitions == 20) {
+        if (this.repetitions == 2) {
             clearInterval(animateId);
             this.bottleIsSplashed = true;
         }
-  }
+    }
+
+    bottleHitGround() {
+        return this.y >= 320;
+    }
 }

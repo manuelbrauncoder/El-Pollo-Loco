@@ -92,6 +92,7 @@ class Endboss extends MovableObject {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
                 this.hitBossSound.play();
+                this.speed += 0.5;
             } else if (this.isDead()) {
                 this.playDeathAnimation();
             } else if (this.characterIsInRange) {

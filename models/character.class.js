@@ -151,6 +151,7 @@ class Character extends MovableObject {
     playDeathAnimation() {
         this.isStanding = false;
         this.repetitions++;
+        this.hurting_sound.play();
         this.playAnimation(this.IMAGES_DEAD);
         if (this.repetitions == 10) {
             this.isStanding = false;

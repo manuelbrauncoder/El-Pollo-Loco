@@ -167,7 +167,7 @@ class World {
                 this.character.jump(10);
             } else if (this.character.isColliding(enemy) && !this.isEnemyDead(enemy)) {
                 if (this.lastHit === undefined || this.checkLastHit()) {
-                    this.characterTakesDamage(5);
+                    this.characterTakesDamage(15);
                 } else {
                     return;
                 }
@@ -184,7 +184,7 @@ class World {
     checkCollisionWithEndboss() {
         if (this.character.isColliding(this.endboss)) {
             if (this.lastHit === undefined || this.checkLastHit()) {
-                this.characterTakesDamage(20);
+                this.characterTakesDamage(25);
             }
         }
     }

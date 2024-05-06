@@ -42,7 +42,13 @@ class DrawableObject {
      * @param {context} ctx 
      */
     draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        try {
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        } catch (error) {
+            console.warn('error loading image', error);
+            console.log('could not load image', this.img.src);
+        }
+        
     }
 
     /**
