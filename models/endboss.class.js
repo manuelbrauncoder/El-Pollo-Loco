@@ -65,7 +65,8 @@ class Endboss extends MovableObject {
     playDeathAnimation() {
         this.repetitions++;
         this.playAnimation(this.IMAGES_DEAD);
-        this.bossDead.play();
+        this.speed = 0;
+        playSound(this.bossDead);
         if (this.repetitions == 10) {
             this.handleDeath();
         }
@@ -80,7 +81,7 @@ class Endboss extends MovableObject {
         this.height = 200;
         this.width = 125;
         this.y = 300;
-        this.winningSound.play();
+        playSound(this.winningSound);
         showWiningScreen();
     }
 
@@ -91,7 +92,7 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-                this.hitBossSound.play();
+                playSound(this.hitBossSound);
                 this.speed += 0.5;
             } else if (this.isDead()) {
                 this.playDeathAnimation();

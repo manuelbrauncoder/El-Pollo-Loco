@@ -45,7 +45,7 @@ class StatusbarBottle extends Statusbar {
      */
     hitCollectebleBottle() {
         this.bottlesPercentage += 10;
-        this.collecting_Bottle_Sound.play();
+        playSound(this.collecting_Bottle_Sound);
         if(this.bottlesPercentage >= 100) {
             this.bottlesPercentage = 100;
         }

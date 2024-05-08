@@ -47,7 +47,7 @@ class StatusbarCoin extends Statusbar {
      */
     hitCollectebleCoin() {
         this.coinPercentage += 10;
-        this.collecting_coin_sound.play();
+        playSound(this.collecting_coin_sound);
         if (this.coinPercentage >= 100) {
             this.coinPercentage = 100;
         }

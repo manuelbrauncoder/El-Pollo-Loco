@@ -96,16 +96,27 @@ class World {
                 if (this.isEnemyHitWithBottle(throwableObject, enemy)) {
                     this.killEnemy(enemy);
                     throwableObject.isDestroyed = true;
-                    if (throwableObject.bottleIsSplashed) this.deleteObject(throwableObject, this.throwableObjects);   
+                    if (throwableObject.bottleIsSplashed) this.deleteObject(throwableObject, this.throwableObjects);
                 }
             });
         });
     }
 
+    /**
+     * 
+     * @param {*} throwableObject 
+     * @param {*} enemy 
+     * @returns true if obj is colliding with alive enemy
+     */
     isEnemyHitWithBottle(throwableObject, enemy) {
         return throwableObject.isColliding(enemy) && !this.isEnemyDead(enemy);
     }
 
+    /**
+     * 
+     * @param {object} throwableObject 
+     * @returns true if is endboss is colliding with obj and obj is not destroyed yet
+     */
     isEndbossHitWithBottle(throwableObject) {
         return this.endboss.isColliding(throwableObject) && !this.isThrowableObjectDestroyed(throwableObject);
     }
@@ -128,6 +139,11 @@ class World {
         return this.deadEnemies.some(e => e === enemy);
     }
 
+    /**
+     * 
+     * @param {object} obj 
+     * @returns true if obj in in destroyedObjects array
+     */
     isThrowableObjectDestroyed(obj) {
         return this.destroyedObjects.some(destroyedObject => destroyedObject === obj);
     }
@@ -140,9 +156,12 @@ class World {
             this.throwBottle();
         }
     }
-
+    /**
+     * create new throwable object and push to array
+     * set bottle status bar
+     */
     throwBottle() {
-        let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+        let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 90);
         this.throwableObjects.push(bottle);
         this.statusBarBottle.bottlesPercentage -= 10;
         this.statusBarBottle.setBottles(this.statusBarBottle.bottlesPercentage);
@@ -175,12 +194,19 @@ class World {
         });
     }
 
+    /**
+     * set damage and reduce health bar
+     * @param {number} dmg 
+     */
     characterTakesDamage(dmg) {
         this.character.hit(dmg);
         this.statusBarLive.setPercentage(this.character.energy);
         this.lastHit = new Date().getTime();
     }
 
+    /**
+     * check collisions with endboss
+     */
     checkCollisionWithEndboss() {
         if (this.character.isColliding(this.endboss)) {
             if (this.lastHit === undefined || this.checkLastHit()) {
@@ -189,6 +215,10 @@ class World {
         }
     }
 
+    /**
+     * 
+     * @returns true if last hit was longer than 500ms ago
+     */
     checkLastHit() {
         let hit = new Date().getTime();
         let difference = hit - this.lastHit;

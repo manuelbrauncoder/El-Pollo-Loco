@@ -10,7 +10,6 @@ body {
     align-items: center;
     justify-content: center;
     gap: 32px;
-    /* height: 100dvh; */
     background-image: url('img/desert.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -83,7 +82,6 @@ canvas {
     display: flex;
     gap: 16px;
 }
-
 
 .btnImg {
     width: 32px;
@@ -179,6 +177,11 @@ a:hover {
     text-decoration: underline;
 }
 
+.infoScreen {
+    height: 480px;
+    width: 720px;
+}
+
 
 @media only screen and (max-width: 720px) {
     .main {
@@ -191,6 +194,7 @@ a:hover {
 
     .infoScreen {
         width: 100%;
+        height: auto;
         object-fit: cover;
     }
 }

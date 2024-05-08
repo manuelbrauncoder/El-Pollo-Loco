@@ -30,7 +30,7 @@ function getElementById(id) {
  */
 function startGame() {
     initLevel();
-    backgroundMusic.play();
+    playSound(backgroundMusic);
     sounds.push(backgroundMusic);
     getElementById('canvas').classList.remove('d-none');
     getElementById('startScreen').classList.add('d-none');
@@ -144,6 +144,15 @@ function toggleAudio() {
         muteAudio();
     }
 }
+
+function playSound(sound) {
+    try {
+        sound.play();
+    } catch (e) {
+        console.log('playing sound failed', e);
+    }
+}
+
 
 
 

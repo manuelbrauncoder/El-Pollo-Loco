@@ -5,7 +5,6 @@ class MovableObject extends DrawableObject {
     speedX = 0;
     acceleration = 2;
     
-    
 /**
  * gravity method
  */

@@ -100,7 +100,7 @@ class Character extends MovableObject {
      */
     jump(speed) {
         super.jump(speed);
-        this.jumping_sound.play();
+        playSound(this.jumping_sound);
     }
 
     /**
@@ -109,7 +109,7 @@ class Character extends MovableObject {
     moveRight() {
         super.moveRight();
         this.otherDirection = false;
-        this.walking_sound.play();
+        playSound(this.walking_sound);
     }
 
     /**
@@ -118,7 +118,7 @@ class Character extends MovableObject {
     moveLeft() {
         super.moveLeft();
         this.otherDirection = true;
-        this.walking_sound.play();
+        playSound(this.walking_sound);
     }
 
     /**
@@ -151,14 +151,14 @@ class Character extends MovableObject {
     playDeathAnimation() {
         this.isStanding = false;
         this.repetitions++;
-        this.hurting_sound.play();
+        playSound(this.hurting_sound);
         this.playAnimation(this.IMAGES_DEAD);
         if (this.repetitions == 10) {
             this.isStanding = false;
             this.world.clearAllIntervals();
             this.loadImage('img/2_character_pepe/5_dead/D-57.png');
             showLosingScreen();
-            this.losing_sound.play();
+            playSound(this.losing_sound);
         }
     }
 
@@ -168,7 +168,7 @@ class Character extends MovableObject {
     playHurtAnimation() {
         this.isStanding = false;
         this.playAnimation(this.IMAGES_HURTING);
-        this.hurting_sound.play();
+        playSound(this.hurting_sound);
     }
 
     /**
@@ -240,14 +240,13 @@ class Character extends MovableObject {
         else if (this.isAboveGround()) this.playJumpAnimation();
         else if (this.isInIdle()) this.playIdleAnimation();
         else if (this.isNotMoving()) this.saveStandingSinceTime();
-        else if (this.isMovingLeftOrRight()) this.playMovingAnimation(); 
+        else if (this.isMovingLeftOrRight()) this.playMovingAnimation();
     }
 
     /**
      * move character
      */
     moveCharacter() {
-        this.walking_sound.pause();
         if (this.isMovingRight()) this.moveRight();
         if (this.isMovingLeft()) this.moveLeft();
         if (this.isJumping()) this.jump(25);

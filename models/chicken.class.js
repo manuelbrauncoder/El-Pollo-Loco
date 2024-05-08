@@ -71,7 +71,7 @@ class Chicken extends MovableObject {
      * animation for death
      */
     animateDeath() {
-        this.dead_sound.play();
+        playSound(this.dead_sound);
         this.stopAnimation();
         this.playAnimation(this.IMAGES_DEAD);
     }
