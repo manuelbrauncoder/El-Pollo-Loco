@@ -3,7 +3,7 @@ class JumpingChicken extends Chicken {
     height = 50;
     width = 50;
     speedY = 0;
-    acceleration = 5;
+    acceleration = 2;
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
@@ -29,10 +29,8 @@ class JumpingChicken extends Chicken {
 
     move() {
         let jumpId = setInterval(() => {
-            this.jump(40);
+            this.jump(25);
         }, 2000);
         this.moveIntervals.push(jumpId);
     }
-
-    
 }
