@@ -32,6 +32,7 @@
 
 
     <script src="./levels/level1.js"></script>
+    <script src="./levels/level2.js"></script>
     <script src="./js/game.js"></script>
 
 </head>
@@ -50,11 +51,12 @@
 
     <div class="main" id="main">
         <div class="upper">
+            <span class="nextLvl" id="nextLvl">Test</span>
             <button id="startBtn" onclick="startGame()"><img class="btnImg" src="./img/buttons/play.png" alt=""></button>
             <button class="d-none" id="stopBtn" onclick="stopGame()"><img class="btnImg" src="./img/buttons/stop.png" alt=""></button>
             <button id="fullScreenBtn" class="d-none" onclick="fullScreen()"><img class="btnImg" src="./img/buttons/fullscreen.png" alt=""></button>
             <button onclick="toggleAudio()" id="muteBtn" class="d-none"><img class="btnImg" src="./img/mute.png" alt=""></button>
-            <button onclick="toggleAudio()" id="unmuteBtn"><img class="btnImg" src="./img/unmute.png" alt=""></button>
+            <button onclick="toggleAudio()" id="unmuteBtn" class="d-none"><img class="btnImg" src="./img/unmute.png" alt=""></button>
         </div>
         <canvas class="d-none" id="canvas" width="720" height="480"></canvas>
         

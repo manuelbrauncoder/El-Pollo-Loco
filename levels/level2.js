@@ -1,14 +1,14 @@
-let level1;
+let level2;
 
-function initLevel1() {
-    level1 = new Level(
+function initLevel2() {
+    level2 = new Level(
         [
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new ChickenSmall(),
-            new ChickenSmall(),
+            // new Chicken(),
+            // new Chicken(),
+            // new Chicken(),
+            // new Chicken(),
+            // new ChickenSmall(),
+            // new ChickenSmall(),
             new ChickenSmall(),
             new ChickenSmall()
         ],
@@ -53,26 +53,26 @@ function initLevel1() {
         ],
         [
 
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
-            new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
+            // new Bottle(),
             new Bottle()
         ],
         [
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
+            // new Coin(),
+            // new Coin(),
+            // new Coin(),
+            // new Coin(),
+            // new Coin(),
+            // new Coin(),
             new Coin()
         ]
     );

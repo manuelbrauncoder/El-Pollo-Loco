@@ -1,7 +1,7 @@
 class World {
     character = new Character();
     endboss = new Endboss();
-    level = level1;
+    level;
     canvas;
     ctx;
     keyboard;
@@ -19,7 +19,8 @@ class World {
     lastHit;
     bossIsSpawned = false;
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, lvl) {
+        this.level = lvl;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
