@@ -10,8 +10,6 @@ let lvl1 = true;
 let lvl2 = false;
 const PLAY_BUTTONS = ['left', 'right', 'jump', 'throw', 'fullScreenBtn'];
 
-// lvl 1 und 2 bool durch current lvl ersetzen, nextLvl fn anpassen, variablen entsprechend ändern
-
 /**
  * init is running when body is loaded
  */
@@ -212,8 +210,3 @@ function nextLvl() {
     if (lvl1) loadLvl1();
     if (lvl2) loadLvl2();
 }
-
-
-
-
-

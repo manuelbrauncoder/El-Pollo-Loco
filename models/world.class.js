@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    endboss = new Endboss();
+    endboss = lvl1 ? new Endboss(0.5) : new Endboss(0.8);
     level;
     canvas;
     ctx;
@@ -232,7 +232,7 @@ class World {
      * @returns true if character is jumping on enemy
      */
     isJumpingOnEnemy(enemy) {
-        return this.character.isAboveGround() && this.character.speedY < 0 && !this.isEnemyDead(enemy) && this.character.isColliding(enemy);
+        return this.character.isAboveGround(210) && this.character.speedY < 0 && !this.isEnemyDead(enemy) && this.character.isColliding(enemy);
     }
 
 
@@ -288,7 +288,7 @@ class World {
      * add obj to map and draw the world
      */
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);    // canvas wird gelöscht
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addMovableObjectsToMap();
         this.addFixedObjectsToMap();

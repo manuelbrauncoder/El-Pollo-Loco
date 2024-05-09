@@ -15,6 +15,7 @@ class Endboss extends MovableObject {
     winningSound = new Audio('audio/winningSound.mp3');
     hitBossSound = new Audio('audio/hitBoss.mp3');
     bossDead = new Audio('audio/bossDeath.mp3');
+    speedIncrease;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -45,7 +46,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G26.png',
     ]
 
-    constructor() {
+    constructor(speedIncrease) {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_HURT);
@@ -57,6 +58,7 @@ class Endboss extends MovableObject {
         sounds.push(this.winningSound);
         sounds.push(this.hitBossSound);
         sounds.push(this.bossDead);
+        this.speedIncrease = speedIncrease;
     }
 
     /**
@@ -93,7 +95,7 @@ class Endboss extends MovableObject {
             if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
                 playSound(this.hitBossSound);
-                this.speed += 0.5;
+                this.speed += this.speedIncrease;
             } else if (this.isDead()) {
                 this.playDeathAnimation();
             } else if (this.characterIsInRange) {

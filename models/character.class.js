@@ -84,7 +84,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SLEEP);
-        this.applyGravity();
+        this.applyGravity(210);
         this.animate();
         this.walking_sound.volume = 0.3;
         sounds.push(this.walking_sound);
@@ -126,7 +126,7 @@ class Character extends MovableObject {
      * @returns true if character is jumping
      */
     isJumping() {
-        return this.world.keyboard.JUMP && !this.isAboveGround();
+        return this.world.keyboard.JUMP && !this.isAboveGround(210);
     }
 
     /**
@@ -184,7 +184,7 @@ class Character extends MovableObject {
      * @returns true if character is in idle
      */
     isInIdle() {
-        return this.isStanding === true && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround();
+        return this.isStanding === true && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround(210);
     }
 
     /**
@@ -204,7 +204,7 @@ class Character extends MovableObject {
      * @returns true if character is not moving
      */
     isNotMoving() {
-        return !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround();
+        return !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.isAboveGround(210);
     }
 
     /**
@@ -237,7 +237,7 @@ class Character extends MovableObject {
     animateCharacter() {
         if (this.isDead()) this.playDeathAnimation();
         else if (this.isHurt()) this.playHurtAnimation();
-        else if (this.isAboveGround()) this.playJumpAnimation();
+        else if (this.isAboveGround(210)) this.playJumpAnimation();
         else if (this.isInIdle()) this.playIdleAnimation();
         else if (this.isNotMoving()) this.saveStandingSinceTime();
         else if (this.isMovingLeftOrRight()) this.playMovingAnimation();

@@ -3,14 +3,18 @@ let level2;
 function initLevel2() {
     level2 = new Level(
         [
-            // new Chicken(),
-            // new Chicken(),
-            // new Chicken(),
-            // new Chicken(),
-            // new ChickenSmall(),
-            // new ChickenSmall(),
+            new Chicken(),
+            new Chicken(),
+            new Chicken(),
+            new Chicken(),
             new ChickenSmall(),
-            new ChickenSmall()
+            new ChickenSmall(),
+            new ChickenSmall(),
+            new ChickenSmall(),
+            new JumpingChicken(),
+            new JumpingChicken(),
+            new JumpingChicken(),
+            new JumpingChicken()
         ],
         [
             new Cloud(),
@@ -52,27 +56,22 @@ function initLevel2() {
             new BackgroundObject('img/5_background/layers/1_first_layer/1.png', 719 * 4),
         ],
         [
-
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
-            // new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
             new Bottle()
         ],
         [
-            // new Coin(),
-            // new Coin(),
-            // new Coin(),
-            // new Coin(),
-            // new Coin(),
-            // new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
             new Coin()
         ]
     );

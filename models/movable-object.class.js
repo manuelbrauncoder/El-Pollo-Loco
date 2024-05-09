@@ -8,9 +8,9 @@ class MovableObject extends DrawableObject {
 /**
  * gravity method
  */
-    applyGravity() {
+    applyGravity(bottom) {
         setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
+            if (this.isAboveGround(bottom) || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
@@ -22,11 +22,11 @@ class MovableObject extends DrawableObject {
      * 
      * @returns true if obj is above ground
      */
-    isAboveGround() {
+    isAboveGround(bottom) {
         if (this instanceof ThrowableObject) {
             return true;
         } else {
-            return this.y < 210;
+            return this.y < bottom; // 210 for character
         }
     }
 
