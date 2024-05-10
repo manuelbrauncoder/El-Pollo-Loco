@@ -30,6 +30,7 @@ class World {
         this.setStoppableInterval(this.checkThrowObjects.bind(this), 150);
         this.setStoppableInterval(this.checkCollisionsWithEnemies.bind(this), 20);
         this.setStoppableInterval(this.checkCollisionWithEndboss.bind(this), 20);
+        this.setStoppableInterval(this.checkBottleHitGround.bind(this), 20);
     }
 
     /**
@@ -48,6 +49,17 @@ class World {
     setStoppableInterval(fn, time) {
         let id = setInterval(fn, time);
         this.intervalIds.push(id);
+    }
+
+    /**
+     * delete bottle after timeout
+     */
+    checkBottleHitGround() {
+        this.throwableObjects.forEach((obj) => {
+            if(obj.bottleHitGround()) {
+                this.deleteObjectAfterTimeout(obj, this.throwableObjects, 80);
+            }
+        })
     }
 
     /**
@@ -82,9 +94,7 @@ class World {
         this.destroyedObjects.push(throwableObject);
         this.endboss.hit(20);
         this.statusBarBoss.setHealth(this.endboss.energy);
-        if (throwableObject.bottleIsSplashed) {
-            this.deleteObject(throwableObject, this.throwableObjects);
-        }
+        this.deleteObjectAfterTimeout(throwableObject, this.throwableObjects, 100);
     }
 
     /**
@@ -97,10 +107,22 @@ class World {
                 if (this.isEnemyHitWithBottle(throwableObject, enemy)) {
                     this.killEnemy(enemy);
                     throwableObject.isDestroyed = true;
-                    if (throwableObject.bottleIsSplashed) this.deleteObject(throwableObject, this.throwableObjects);
+                    this.deleteObjectAfterTimeout(throwableObject, this.throwableObjects, 50);
                 }
             });
         });
+    }
+
+    /**
+     * delete object after timeout
+     * @param {obj} obj obj to delete
+     * @param {Array} arr arr where obj is stored
+     * @param {number} time in ms
+     */
+    deleteObjectAfterTimeout(obj, arr, time) {
+        setTimeout(() => {
+            this.deleteObject(obj, arr);
+        }, time);
     }
 
     /**
@@ -235,7 +257,6 @@ class World {
         return this.character.isAboveGround(210) && this.character.speedY < 0 && !this.isEnemyDead(enemy) && this.character.isColliding(enemy);
     }
 
-
     /**
      * collect bottles
      * @param {object} collectableObj 
@@ -303,7 +324,6 @@ class World {
         });
     }
 
-
     /**
      * add movable objects to map
      */
@@ -342,7 +362,6 @@ class World {
         movableObject.draw(this.ctx);
         //movableObject.drawFrame(this.ctx);
         //movableObject.drawOffsetFrame(this.ctx);
-
         if (movableObject.otherDirection) {
             this.flipImageBack(movableObject);
         }

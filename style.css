@@ -75,7 +75,7 @@ canvas {
 
 .upper {
     position: absolute;
-    top: 0;
+    top: 8px;
     left: 50%;
     transform: translateX(-50%);
     padding: 16px 0 0 0;
@@ -206,8 +206,12 @@ a:hover {
 }
 
 @media only screen and (max-height: 480px) {
+    body {
+        height: 100vh;
+    }
+
     .main {
-        height: 100dvh;
+        height: 100%;
     }
 
     canvas {

@@ -12,7 +12,7 @@ class StatusbarLive extends Statusbar {
         super();
         this.loadImages(this.IMAGES);
         this.x = 0;
-        this.y = 0;
+        this.y = 10;
         this.setPercentage(100);
     }
 }

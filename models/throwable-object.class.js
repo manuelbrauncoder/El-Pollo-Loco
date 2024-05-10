@@ -45,10 +45,13 @@ class ThrowableObject extends MovableObject {
                 this.x += 10 * throwDirection;
                 this.playAnimation(this.IMAGES_BOTTLE_ROTATE);
             }
-
         }, 50);
     }
 
+    /**
+     * play animation for splashing bottle
+     * @param {id} animateId 
+     */
     playSplashAnimation(animateId) {
         this.repetitions++;
         this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
@@ -58,6 +61,10 @@ class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+     * 
+     * @returns true if bottle hit ground
+     */
     bottleHitGround() {
         return this.y >= 320;
     }

@@ -15,7 +15,7 @@ class StatusbarBottle extends Statusbar {
         super();
         this.loadImages(this.IMAGES);
         this.x = 0;
-        this.y = 80;
+        this.y = 90;
         this.setBottles(this.bottlesPercentage);
         sounds.push(this.collecting_Bottle_Sound);
     }

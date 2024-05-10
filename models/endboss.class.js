@@ -58,6 +58,8 @@ class Endboss extends MovableObject {
         sounds.push(this.winningSound);
         sounds.push(this.hitBossSound);
         sounds.push(this.bossDead);
+        this.hitBossSound.volume = 0.5;
+        this.bossDead.volume = 0.5;
         this.speedIncrease = speedIncrease;
     }
 

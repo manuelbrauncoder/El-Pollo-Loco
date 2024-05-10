@@ -15,7 +15,7 @@ class StatusbarEndboss extends Statusbar {
         super();
         this.loadImages(this.IMAGES);
         this.x = 550;
-        this.y = 10;
+        this.y = 20;
         this.setHealth(100);
     }
 

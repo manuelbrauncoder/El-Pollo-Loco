@@ -17,7 +17,7 @@ class StatusbarCoin extends Statusbar {
         super();
         this.loadImages(this.IMAGES);
         this.x = 0;
-        this.y = 40;
+        this.y = 50;
         this.setCoins(this.coinPercentage);
         sounds.push(this.collecting_coin_sound);
     }
