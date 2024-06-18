@@ -1,6 +1,6 @@
 class World {
     character = new Character();
-    endboss = lvl1 ? new Endboss(0.5) : new Endboss(0.8);
+    endboss = this.defineEndbossDifficulty();
     level;
     canvas;
     ctx;
@@ -39,6 +39,18 @@ class World {
     setWorld() {
         this.character.world = this;
         this.endboss.world = this;
+    }
+
+    defineEndbossDifficulty(){
+        if(currentLvl === 'lvl1'){
+            return new Endboss(0.5);
+        } else if(currentLvl === 'lvl2'){
+            return new Endboss(0.8);
+        } else if(currentLvl === 'lvl3'){
+            return new Endboss(1);
+        } else if(currentLvl === 'lvl4'){
+            return new Endboss(0.1);
+        }
     }
 
     /**
@@ -107,7 +119,7 @@ class World {
                 if (this.isEnemyHitWithBottle(throwableObject, enemy)) {
                     this.killEnemy(enemy);
                     throwableObject.isDestroyed = true;
-                    this.deleteObjectAfterTimeout(throwableObject, this.throwableObjects, 50);
+                    this.deleteObjectAfterTimeout(throwableObject, this.throwableObjects, 60);
                 }
             });
         });
